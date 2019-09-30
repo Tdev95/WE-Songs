@@ -1,17 +1,11 @@
 from flask import Flask
+from api import api
 import config
 
-# create application instance
+# create application instance and register api
 
 app = Flask(__name__)
-
-# routing
-
-
-@app.route('/hello/')
-def home():
-    return 'Hello world!'
-
+app.register_blueprint(api)
 
 # run application if standalone mode
 if __name__ == '__main__':
