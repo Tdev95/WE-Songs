@@ -1,4 +1,4 @@
-from flask import Blueprint, request, abort
+from flask import Blueprint, request, abort, Response
 
 # create blueprint
 api = Blueprint('api', __name__)
@@ -43,4 +43,7 @@ def songs():
 
 @api.route('/stats', methods=['GET'])
 def stats():
-    abort(501)
+    response = Response("test data")
+    response.status = '501'
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
