@@ -4,7 +4,7 @@ SELECT *
 FROM artist;
 
 -- GET /artists/{artistId}
-SELECt *
+SELECT *
 FROM artist
 WHERE id = artistId;
 
