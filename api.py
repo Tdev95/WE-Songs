@@ -18,29 +18,70 @@ def construct_blueprint(mysql):
 
     @api.route('/test/', methods=['GET', 'POST'])
     def sql():
+        # print URL arguments
+        print(request.args)
+
+        # print supported mimetypes for content negotiation
+        print(request.accept_mimetypes)
+
         with execute_query(mysql, 'SELECT * FROM artist;') as rv:
+            print(rv)
             return str(rv)
 
     @api.route('/artists', methods=['GET'])
     def artists():
-        # print URL arguments
-        print(request.args)
-
-        # print available arguments
+        '''
+        id
+        name
+        genre
+        sort
+        page
+        '''
         args = request.args
 
-        header_exists = {
-            'id': 'id' in args,
-            'genre': 'genre' in args,
-            'sort': 'sort' in args,
-            'pageSize': 'pageSize' in args,
-            'pageStartIndex': 'pageStartIndex' in args
-        }
+        valid_args = args  # TODO: add validity checking or risk injection attacks
 
-        print(header_exists)
+        where = False
 
-        # print supported mimetypes for content negotiation
-        print(request.accept_mimetypes)
+        query = 'SELECT * FROM artist'
+
+        if 'id' in valid_args:
+            if not where:
+                query += ' WHERE '
+                where = True
+            query += 'id = "' + valid_args['id'] + '"'
+
+        if 'name' in valid_args:
+            if not where:
+                query += ' WHERE '
+                where = True
+            else:
+                query += ' AND '
+            query += 'name LIKE "%' + valid_args['name'] + '%"'
+
+        if 'genre' in valid_args:
+            if not where:
+                query += ' WHERE '
+                where = True
+            else:
+                query += ' AND '
+            query += 'genre LIKE "%' + valid_args['genre'] + '%"'
+
+        if 'sort' in valid_args:
+            if valid_args['sort'] == 'hotttness':
+                query += ' ORDER BY hotttnesss'  # TODO: spelling
+            if valid_args['sort'] == 'familiarity':
+                query += ' ORDER BY familiarity'
+
+        if 'page' in valid_args:
+            query += ' LIMIT 50 offset ' + str(int(valid_args['page']) * 50) + ';'
+        try:
+            with execute_query(mysql, query) as rv:
+                return(str(rv))
+        except Exception:
+            # bad request if query fails
+            abort(400)
+
         abort(501)
 
     @api.route('/songs', methods=['DELETE', 'GET', 'POST', 'PUT'])
