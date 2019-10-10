@@ -1,5 +1,7 @@
 from flask import Blueprint, request, abort, Response
 from contextlib import contextmanager
+import json
+import collections
 
 
 @contextmanager
@@ -41,10 +43,13 @@ def construct_blueprint(mysql):
 
         valid_args = args  # TODO: add validity checking or risk injection attacks
 
+        # flag used to detect whether WHERE clause was used
         where = False
 
+        # base query
         query = 'SELECT * FROM artist'
 
+        # filter by id, name and/or genre
         if 'id' in valid_args:
             if not where:
                 query += ' WHERE '
@@ -65,24 +70,42 @@ def construct_blueprint(mysql):
                 where = True
             else:
                 query += ' AND '
-            query += 'genre LIKE "%' + valid_args['genre'] + '%"'
+            query += 'terms LIKE "%' + valid_args['genre'] + '%"'
 
+        # sorting
         if 'sort' in valid_args:
-            if valid_args['sort'] == 'hotttness':
+            if valid_args['sort'] == 'hotness':
                 query += ' ORDER BY hotttnesss'  # TODO: spelling
             if valid_args['sort'] == 'familiarity':
                 query += ' ORDER BY familiarity'
 
+        # pagination
         if 'page' in valid_args:
             query += ' LIMIT 50 offset ' + str(int(valid_args['page']) * 50) + ';'
+
+        # print(query)
+        # format query result
         try:
-            with execute_query(mysql, query) as rv:
-                return(str(rv))
+            with execute_query(mysql, query) as rows:
+                print(str(rows))
+                list = []
+                for row in rows:
+                    d = collections.OrderedDict()
+                    d['id'] = row[0]
+                    d['familiarity'] = row[1]
+                    d['hotness'] = row[2]
+                    d['lattitude'] = row[3]
+                    d['location'] = row[4]
+                    d['longitude'] = row[5]
+                    d['name'] = row[6]
+                    d['similar'] = row[7]
+                    d['terms'] = row[8]
+                    d['terms_freq'] = row[9]
+                    list.append(d)
+                return(json.dumps(list))
         except Exception:
             # bad request if query fails
             abort(400)
-
-        abort(501)
 
     @api.route('/songs', methods=['DELETE', 'GET', 'POST', 'PUT'])
     def songs():
