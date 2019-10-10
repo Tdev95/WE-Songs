@@ -1,19 +1,25 @@
 from flask import Blueprint, request, abort, Response
+from contextlib import contextmanager
 
-# create blueprint
+
+@contextmanager
+def execute_query(db, query):
+    '''query context manager'''
+    cursor = db.connection.cursor()
+    cursor.execute(query)
+    db.connection.commit()
+    yield cursor.fetchall()
+    cursor.close()
 
 
 def construct_blueprint(mysql):
+    '''constructs blueprint'''
     api = Blueprint('api', __name__)
 
     @api.route('/test/', methods=['GET', 'POST'])
     def sql():
-        cur = mysql.connection.cursor()
-        cur.execute('SELECT * FROM artist;')
-        mysql.connection.commit()
-        rv = cur.fetchall()
-        cur.close()
-        return str(rv)
+        with execute_query(mysql, 'SELECT * FROM artist;') as rv:
+            return str(rv)
 
     @api.route('/artists', methods=['GET'])
     def artists():
