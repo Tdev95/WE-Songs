@@ -1,0 +1,1149 @@
+<!doctype html>
+<html>
+  <head>
+    <title>API songs</title>
+    <style type="text/css">
+      body {
+	font-family: Trebuchet MS, sans-serif;
+	font-size: 15px;
+	color: #444;
+	margin-right: 24px;
+}
+
+h1	{
+	font-size: 25px;
+}
+h2	{
+	font-size: 20px;
+}
+h3	{
+	font-size: 16px;
+	font-weight: bold;
+}
+hr	{
+	height: 1px;
+	border: 0;
+	color: #ddd;
+	background-color: #ddd;
+}
+
+.app-desc {
+  clear: both;
+  margin-left: 20px;
+}
+.param-name {
+  width: 100%;
+}
+.license-info {
+  margin-left: 20px;
+}
+
+.license-url {
+  margin-left: 20px;
+}
+
+.model {
+  margin: 0 0 0px 20px;
+}
+
+.method {
+  margin-left: 20px;
+}
+
+.method-notes	{
+	margin: 10px 0 20px 0;
+	font-size: 90%;
+	color: #555;
+}
+
+pre {
+  padding: 10px;
+  margin-bottom: 2px;
+}
+
+.http-method {
+ text-transform: uppercase;
+}
+
+pre.get {
+  background-color: #0f6ab4;
+}
+
+pre.post {
+  background-color: #10a54a;
+}
+
+pre.put {
+  background-color: #c5862b;
+}
+
+pre.delete {
+  background-color: #a41e22;
+}
+
+.huge	{
+	color: #fff;
+}
+
+pre.example {
+  background-color: #f3f3f3;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+code {
+  white-space: pre;
+}
+
+.nickname {
+  font-weight: bold;
+}
+
+.method-path {
+  font-size: 1.5em;
+  background-color: #0f6ab4;
+}
+
+.up {
+  float:right;
+}
+
+.parameter {
+  width: 500px;
+}
+
+.param {
+  width: 500px;
+  padding: 10px 0 0 20px;
+  font-weight: bold;
+}
+
+.param-desc {
+  width: 700px;
+  padding: 0 0 0 20px;
+  color: #777;
+}
+
+.param-type {
+  font-style: italic;
+}
+
+.param-enum-header {
+width: 700px;
+padding: 0 0 0 60px;
+color: #777;
+font-weight: bold;
+}
+
+.param-enum {
+width: 700px;
+padding: 0 0 0 80px;
+color: #777;
+font-style: italic;
+}
+
+.field-label {
+  padding: 0;
+  margin: 0;
+  clear: both;
+}
+
+.field-items	{
+	padding: 0 0 15px 0;
+	margin-bottom: 15px;
+}
+
+.return-type {
+  clear: both;
+  padding-bottom: 10px;
+}
+
+.param-header {
+  font-weight: bold;
+}
+
+.method-tags {
+  text-align: right;
+}
+
+.method-tag {
+  background: none repeat scroll 0% 0% #24A600;
+  border-radius: 3px;
+  padding: 2px 10px;
+  margin: 2px;
+  color: #FFF;
+  display: inline-block;
+  text-decoration: none;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>API songs</h1>
+    <div class="app-desc">This is a RESTful API for the songs database</div>
+    <div class="app-desc">More information: <a href="https://helloreverb.com">https://helloreverb.com</a></div>
+    <div class="app-desc">Contact Info: <a href="hello@helloreverb.com">hello@helloreverb.com</a></div>
+    <div class="app-desc">Version: 1.0.0</div>
+    <div class="app-desc">BasePath:/E.Waterink/WebEngineering/1.0.0</div>
+    <div class="license-info">All rights reserved</div>
+    <div class="license-url">http://apache.org/licenses/LICENSE-2.0.html</div>
+  <h2>Access</h2>
+    <ol>
+      <li>APIKey KeyParamName:api_key KeyInQuery:false KeyInHeader:true</li>
+      <li>OAuth AuthorizationUrl:http://petstore.swagger.io/oauth/dialogTokenUrl:</li>
+    </ol>
+
+  <h2><a name="__Methods">Methods</a></h2>
+  [ Jump to <a href="#__Models">Models</a> ]
+
+  <h3>Table of Contents </h3>
+  <div class="method-summary"></div>
+  <h4><a href="#Artist">Artist</a></h4>
+  <ul>
+  <li><a href="#aristsGet"><code><span class="http-method">get</span> /arists</code></a></li>
+  <li><a href="#sortArtistsByHotness"><code><span class="http-method">get</span> /artists/ranked</code></a></li>
+  </ul>
+  <h4><a href="#Histogram">Histogram</a></h4>
+  <ul>
+  <li><a href="#getHistogramByGenre"><code><span class="http-method">get</span> /histograms/genre</code></a></li>
+  </ul>
+  <h4><a href="#Song">Song</a></h4>
+  <ul>
+  <li><a href="#addSong"><code><span class="http-method">put</span> /songs</code></a></li>
+  <li><a href="#deleteSong"><code><span class="http-method">delete</span> /songs/{songId}</code></a></li>
+  <li><a href="#findByArtistYear"><code><span class="http-method">get</span> /songs</code></a></li>
+  <li><a href="#getSongById"><code><span class="http-method">get</span> /songs/{songId}</code></a></li>
+  <li><a href="#patchSong"><code><span class="http-method">patch</span> /songs/{songId}</code></a></li>
+  <li><a href="#sortSongsByHotness"><code><span class="http-method">get</span> /songs/ranked</code></a></li>
+  <li><a href="#updateSongWithForm"><code><span class="http-method">post</span> /songs/{songId}</code></a></li>
+  </ul>
+  <h4><a href="#Statistic">Statistic</a></h4>
+  <ul>
+  <li><a href="#findStatisticsByYear"><code><span class="http-method">get</span> /statistics</code></a></li>
+  </ul>
+
+  <h1><a name="Artist">Artist</a></h1>
+  <div class="method"><a name="aristsGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /arists</code></pre></div>
+    <div class="method-summary">Get some artists (<span class="nickname">aristsGet</span>)</div>
+    <div class="method-notes">Returns a list of all artists in the dataset, optionally filtered by artist name and/or genre</div>
+
+
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">artist name (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; The name of the artist </div><div class="param">genre (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; The genre of the song </div><div class="param">pageSize (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Number of artists per page </div><div class="param">pageNumber (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; The page index </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#Artist">Artist</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "similar" : 2.302136,
+  "familiarity" : 0.08008282,
+  "terms" : "terms",
+  "latitude" : 1.4658129,
+  "name" : "name",
+  "location" : 5,
+  "id" : "id",
+  "hotness" : 0.6027456,
+  "terms_freq" : 7.0614014,
+  "longitude" : 5.962134
+}, {
+  "similar" : 2.302136,
+  "familiarity" : 0.08008282,
+  "terms" : "terms",
+  "latitude" : 1.4658129,
+  "name" : "name",
+  "location" : 5,
+  "id" : "id",
+  "hotness" : 0.6027456,
+  "terms_freq" : 7.0614014,
+  "longitude" : 5.962134
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+      <li><code>text/csv</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    successful operation
+        
+    <h4 class="field-label">400</h4>
+    Invalid status value
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="sortArtistsByHotness"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /artists/ranked</code></pre></div>
+    <div class="method-summary">An ordering of artists ranked and subsetted by popularity (<span class="nickname">sortArtistsByHotness</span>)</div>
+    <div class="method-notes"></div>
+
+
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">subset (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; The subset, e.g. top 50 </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#Song">Song</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "mode_confidence" : 1.0246457,
+  "artist" : {
+    "similar" : 2.302136,
+    "familiarity" : 0.08008282,
+    "terms" : "terms",
+    "latitude" : 1.4658129,
+    "name" : "name",
+    "location" : 5,
+    "id" : "id",
+    "hotness" : 0.6027456,
+    "terms_freq" : 7.0614014,
+    "longitude" : 5.962134
+  },
+  "artist_mbta_count" : 6.0274563,
+  "beats_confidence" : 5.637377,
+  "year" : 9,
+  "bars_start" : 5.962134,
+  "loudness" : 7.386282,
+  "tempo" : 1.1730742,
+  "end_of_fade_in" : 9.301444,
+  "hotness" : 3.6160767,
+  "title" : 9,
+  "key_confidence" : 4.145608,
+  "bars_confidence" : 1.4658129,
+  "beats_start" : 2.302136,
+  "duration" : 7.0614014,
+  "mode" : 1,
+  "start_of_fade_out" : 1.4894159,
+  "id" : "id",
+  "time_signature_confidence" : 5.025005,
+  "artist_mbta" : 0.8008282,
+  "tatums_confidence" : 6.846853,
+  "key" : 2.027123,
+  "tatums_start" : 7.4577446,
+  "time_signature" : 4.9652185
+}, {
+  "mode_confidence" : 1.0246457,
+  "artist" : {
+    "similar" : 2.302136,
+    "familiarity" : 0.08008282,
+    "terms" : "terms",
+    "latitude" : 1.4658129,
+    "name" : "name",
+    "location" : 5,
+    "id" : "id",
+    "hotness" : 0.6027456,
+    "terms_freq" : 7.0614014,
+    "longitude" : 5.962134
+  },
+  "artist_mbta_count" : 6.0274563,
+  "beats_confidence" : 5.637377,
+  "year" : 9,
+  "bars_start" : 5.962134,
+  "loudness" : 7.386282,
+  "tempo" : 1.1730742,
+  "end_of_fade_in" : 9.301444,
+  "hotness" : 3.6160767,
+  "title" : 9,
+  "key_confidence" : 4.145608,
+  "bars_confidence" : 1.4658129,
+  "beats_start" : 2.302136,
+  "duration" : 7.0614014,
+  "mode" : 1,
+  "start_of_fade_out" : 1.4894159,
+  "id" : "id",
+  "time_signature_confidence" : 5.025005,
+  "artist_mbta" : 0.8008282,
+  "tatums_confidence" : 6.846853,
+  "key" : 2.027123,
+  "tatums_start" : 7.4577446,
+  "time_signature" : 4.9652185
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+      <li><code>text/csv</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    successful operation
+        
+    <h4 class="field-label">400</h4>
+    Invalid subset value
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <h1><a name="Histogram">Histogram</a></h1>
+  <div class="method"><a name="getHistogramByGenre"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /histograms/genre</code></pre></div>
+    <div class="method-summary">A histogram of genre (<span class="nickname">getHistogramByGenre</span>)</div>
+    <div class="method-notes"></div>
+
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#Histogram">Histogram</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "name" : "Histogram of genres",
+  "url" : "url"
+}</code></pre>
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    successful operation
+        <a href="#Histogram">Histogram</a>
+  </div> <!-- method -->
+  <hr/>
+  <h1><a name="Song">Song</a></h1>
+  <div class="method"><a name="addSong"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="put"><code class="huge"><span class="http-method">put</span> /songs</code></pre></div>
+    <div class="method-summary">Add a new song to the dataset (<span class="nickname">addSong</span>)</div>
+    <div class="method-notes"></div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+      <li><code>text/csv</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">song <a href="#Song">Song</a> (required)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash; Song object that needs to be added to the dataset </div>
+
+    </div>  <!-- field-items -->
+
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+      <li><code>text/csv</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">201</h4>
+    Song succesfully created
+        <a href="#"></a>
+    <h4 class="field-label">400</h4>
+    Song could not have been created
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="deleteSong"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="delete"><code class="huge"><span class="http-method">delete</span> /songs/{songId}</code></pre></div>
+    <div class="method-summary">Deletes a song (<span class="nickname">deleteSong</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">songId (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Song id to delete </div>
+    </div>  <!-- field-items -->
+
+
+
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+      <li><code>text/csv</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">201</h4>
+    Item deleted/not found
+        <a href="#"></a>
+    <h4 class="field-label">404</h4>
+    Song not found
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="findByArtistYear"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /songs</code></pre></div>
+    <div class="method-summary">All songs by a specific artist and/or in specific year (<span class="nickname">findByArtistYear</span>)</div>
+    <div class="method-notes"></div>
+
+
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">artist (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; The name of the artist who made the song </div><div class="param">year (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; The year the song was released </div><div class="param">genre (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; The genre of the song/artist </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#Song">Song</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "mode_confidence" : 1.0246457,
+  "artist" : {
+    "similar" : 2.302136,
+    "familiarity" : 0.08008282,
+    "terms" : "terms",
+    "latitude" : 1.4658129,
+    "name" : "name",
+    "location" : 5,
+    "id" : "id",
+    "hotness" : 0.6027456,
+    "terms_freq" : 7.0614014,
+    "longitude" : 5.962134
+  },
+  "artist_mbta_count" : 6.0274563,
+  "beats_confidence" : 5.637377,
+  "year" : 9,
+  "bars_start" : 5.962134,
+  "loudness" : 7.386282,
+  "tempo" : 1.1730742,
+  "end_of_fade_in" : 9.301444,
+  "hotness" : 3.6160767,
+  "title" : 9,
+  "key_confidence" : 4.145608,
+  "bars_confidence" : 1.4658129,
+  "beats_start" : 2.302136,
+  "duration" : 7.0614014,
+  "mode" : 1,
+  "start_of_fade_out" : 1.4894159,
+  "id" : "id",
+  "time_signature_confidence" : 5.025005,
+  "artist_mbta" : 0.8008282,
+  "tatums_confidence" : 6.846853,
+  "key" : 2.027123,
+  "tatums_start" : 7.4577446,
+  "time_signature" : 4.9652185
+}, {
+  "mode_confidence" : 1.0246457,
+  "artist" : {
+    "similar" : 2.302136,
+    "familiarity" : 0.08008282,
+    "terms" : "terms",
+    "latitude" : 1.4658129,
+    "name" : "name",
+    "location" : 5,
+    "id" : "id",
+    "hotness" : 0.6027456,
+    "terms_freq" : 7.0614014,
+    "longitude" : 5.962134
+  },
+  "artist_mbta_count" : 6.0274563,
+  "beats_confidence" : 5.637377,
+  "year" : 9,
+  "bars_start" : 5.962134,
+  "loudness" : 7.386282,
+  "tempo" : 1.1730742,
+  "end_of_fade_in" : 9.301444,
+  "hotness" : 3.6160767,
+  "title" : 9,
+  "key_confidence" : 4.145608,
+  "bars_confidence" : 1.4658129,
+  "beats_start" : 2.302136,
+  "duration" : 7.0614014,
+  "mode" : 1,
+  "start_of_fade_out" : 1.4894159,
+  "id" : "id",
+  "time_signature_confidence" : 5.025005,
+  "artist_mbta" : 0.8008282,
+  "tatums_confidence" : 6.846853,
+  "key" : 2.027123,
+  "tatums_start" : 7.4577446,
+  "time_signature" : 4.9652185
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+      <li><code>text/csv</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    successful operation
+        
+    <h4 class="field-label">400</h4>
+    Invalid year/genre value
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getSongById"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /songs/{songId}</code></pre></div>
+    <div class="method-summary">Find song by ID (<span class="nickname">getSongById</span>)</div>
+    <div class="method-notes">Returns a single song</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">songId (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Unique dataset ID of a song </div>
+    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#Song">Song</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "mode_confidence" : 1.0246457,
+  "artist" : {
+    "similar" : 2.302136,
+    "familiarity" : 0.08008282,
+    "terms" : "terms",
+    "latitude" : 1.4658129,
+    "name" : "name",
+    "location" : 5,
+    "id" : "id",
+    "hotness" : 0.6027456,
+    "terms_freq" : 7.0614014,
+    "longitude" : 5.962134
+  },
+  "artist_mbta_count" : 6.0274563,
+  "beats_confidence" : 5.637377,
+  "year" : 9,
+  "bars_start" : 5.962134,
+  "loudness" : 7.386282,
+  "tempo" : 1.1730742,
+  "end_of_fade_in" : 9.301444,
+  "hotness" : 3.6160767,
+  "title" : 9,
+  "key_confidence" : 4.145608,
+  "bars_confidence" : 1.4658129,
+  "beats_start" : 2.302136,
+  "duration" : 7.0614014,
+  "mode" : 1,
+  "start_of_fade_out" : 1.4894159,
+  "id" : "id",
+  "time_signature_confidence" : 5.025005,
+  "artist_mbta" : 0.8008282,
+  "tatums_confidence" : 6.846853,
+  "key" : 2.027123,
+  "tatums_start" : 7.4577446,
+  "time_signature" : 4.9652185
+}, {
+  "mode_confidence" : 1.0246457,
+  "artist" : {
+    "similar" : 2.302136,
+    "familiarity" : 0.08008282,
+    "terms" : "terms",
+    "latitude" : 1.4658129,
+    "name" : "name",
+    "location" : 5,
+    "id" : "id",
+    "hotness" : 0.6027456,
+    "terms_freq" : 7.0614014,
+    "longitude" : 5.962134
+  },
+  "artist_mbta_count" : 6.0274563,
+  "beats_confidence" : 5.637377,
+  "year" : 9,
+  "bars_start" : 5.962134,
+  "loudness" : 7.386282,
+  "tempo" : 1.1730742,
+  "end_of_fade_in" : 9.301444,
+  "hotness" : 3.6160767,
+  "title" : 9,
+  "key_confidence" : 4.145608,
+  "bars_confidence" : 1.4658129,
+  "beats_start" : 2.302136,
+  "duration" : 7.0614014,
+  "mode" : 1,
+  "start_of_fade_out" : 1.4894159,
+  "id" : "id",
+  "time_signature_confidence" : 5.025005,
+  "artist_mbta" : 0.8008282,
+  "tatums_confidence" : 6.846853,
+  "key" : 2.027123,
+  "tatums_start" : 7.4577446,
+  "time_signature" : 4.9652185
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+      <li><code>text/csv</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    successful operation
+        
+    <h4 class="field-label">400</h4>
+    Invalid status value
+        <a href="#"></a>
+    <h4 class="field-label">404</h4>
+    This song does not exist
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="patchSong"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="patch"><code class="huge"><span class="http-method">patch</span> /songs/{songId}</code></pre></div>
+    <div class="method-summary">Updates some fields of a song (<span class="nickname">patchSong</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">songId (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; ID of song that needs to be updated </div>
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+      <li><code>text/csv</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">properties <a href="#Song">Song</a> (required)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash; Fields to be updated </div>
+
+    </div>  <!-- field-items -->
+
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+      <li><code>text/csv</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Successful
+        <a href="#"></a>
+    <h4 class="field-label">404</h4>
+    This song does not exist
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="sortSongsByHotness"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /songs/ranked</code></pre></div>
+    <div class="method-summary">Ranked artists (<span class="nickname">sortSongsByHotness</span>)</div>
+    <div class="method-notes">An ordering of songs in a specific year ranked and subsetted by popularity</div>
+
+
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">year (required)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; The year the song was released </div><div class="param">subset (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; The subset, e.g. top 50 </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#Song">Song</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "mode_confidence" : 1.0246457,
+  "artist" : {
+    "similar" : 2.302136,
+    "familiarity" : 0.08008282,
+    "terms" : "terms",
+    "latitude" : 1.4658129,
+    "name" : "name",
+    "location" : 5,
+    "id" : "id",
+    "hotness" : 0.6027456,
+    "terms_freq" : 7.0614014,
+    "longitude" : 5.962134
+  },
+  "artist_mbta_count" : 6.0274563,
+  "beats_confidence" : 5.637377,
+  "year" : 9,
+  "bars_start" : 5.962134,
+  "loudness" : 7.386282,
+  "tempo" : 1.1730742,
+  "end_of_fade_in" : 9.301444,
+  "hotness" : 3.6160767,
+  "title" : 9,
+  "key_confidence" : 4.145608,
+  "bars_confidence" : 1.4658129,
+  "beats_start" : 2.302136,
+  "duration" : 7.0614014,
+  "mode" : 1,
+  "start_of_fade_out" : 1.4894159,
+  "id" : "id",
+  "time_signature_confidence" : 5.025005,
+  "artist_mbta" : 0.8008282,
+  "tatums_confidence" : 6.846853,
+  "key" : 2.027123,
+  "tatums_start" : 7.4577446,
+  "time_signature" : 4.9652185
+}, {
+  "mode_confidence" : 1.0246457,
+  "artist" : {
+    "similar" : 2.302136,
+    "familiarity" : 0.08008282,
+    "terms" : "terms",
+    "latitude" : 1.4658129,
+    "name" : "name",
+    "location" : 5,
+    "id" : "id",
+    "hotness" : 0.6027456,
+    "terms_freq" : 7.0614014,
+    "longitude" : 5.962134
+  },
+  "artist_mbta_count" : 6.0274563,
+  "beats_confidence" : 5.637377,
+  "year" : 9,
+  "bars_start" : 5.962134,
+  "loudness" : 7.386282,
+  "tempo" : 1.1730742,
+  "end_of_fade_in" : 9.301444,
+  "hotness" : 3.6160767,
+  "title" : 9,
+  "key_confidence" : 4.145608,
+  "bars_confidence" : 1.4658129,
+  "beats_start" : 2.302136,
+  "duration" : 7.0614014,
+  "mode" : 1,
+  "start_of_fade_out" : 1.4894159,
+  "id" : "id",
+  "time_signature_confidence" : 5.025005,
+  "artist_mbta" : 0.8008282,
+  "tatums_confidence" : 6.846853,
+  "key" : 2.027123,
+  "tatums_start" : 7.4577446,
+  "time_signature" : 4.9652185
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+      <li><code>text/csv</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    successful operation
+        
+    <h4 class="field-label">400</h4>
+    Invalid year or subset value
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="updateSongWithForm"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /songs/{songId}</code></pre></div>
+    <div class="method-summary">Updates a song in the dataset with form data (<span class="nickname">updateSongWithForm</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">songId (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; ID of song that needs to be updated </div>
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+      <li><code>text/csv</code></li>
+    </ul>
+
+
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+      <li><code>text/csv</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">400</h4>
+    Invalid input
+        <a href="#"></a>
+    <h4 class="field-label">404</h4>
+    This song does not exist
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <h1><a name="Statistic">Statistic</a></h1>
+  <div class="method"><a name="findStatisticsByYear"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /statistics</code></pre></div>
+    <div class="method-summary">Descriptive statistics (<span class="nickname">findStatisticsByYear</span>)</div>
+    <div class="method-notes">Descriptive statistics (mean, median, standard deviation) for the popularity of the songs for a particular artist with an optional filter by year</div>
+
+
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">artistId (required)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; The ID of the artist </div><div class="param">year (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; The year the song was released </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#Statistic">Statistic</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "median" : 6.02745618307040320615897144307382404804229736328125,
+  "mean" : 0.80082819046101150206595775671303272247314453125,
+  "standard deviation" : 1.46581298050294517310021547018550336360931396484375
+}, {
+  "median" : 6.02745618307040320615897144307382404804229736328125,
+  "mean" : 0.80082819046101150206595775671303272247314453125,
+  "standard deviation" : 1.46581298050294517310021547018550336360931396484375
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+      <li><code>text/csv</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    successful operation
+        
+    <h4 class="field-label">400</h4>
+    Invalid year value
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+
+  <h2><a name="__Models">Models</a></h2>
+  [ Jump to <a href="#__Methods">Methods</a> ]
+
+  <h3>Table of Contents</h3>
+  <ol>
+    <li><a href="#Artist"><code>Artist</code> - </a></li>
+    <li><a href="#Histogram"><code>Histogram</code> - </a></li>
+    <li><a href="#Song"><code>Song</code> - </a></li>
+    <li><a href="#Statistic"><code>Statistic</code> - </a></li>
+  </ol>
+
+  <div class="model">
+    <h3><a name="Artist"><code>Artist</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">id </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">familiarity (optional)</div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
+<div class="param">hotness (optional)</div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
+<div class="param">latitude (optional)</div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
+<div class="param">longitude (optional)</div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
+<div class="param">location (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  format: int32</div>
+<div class="param">name (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">similar (optional)</div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
+<div class="param">terms (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">terms_freq (optional)</div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="Histogram"><code>Histogram</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">name (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">url (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="Song"><code>Song</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">id </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">artist (optional)</div><div class="param-desc"><span class="param-type"><a href="#Artist">Artist</a></span>  </div>
+<div class="param">artist_mbta (optional)</div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
+<div class="param">artist_mbta_count (optional)</div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
+<div class="param">bars_confidence (optional)</div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
+<div class="param">bars_start (optional)</div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
+<div class="param">beats_confidence (optional)</div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
+<div class="param">beats_start (optional)</div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
+<div class="param">duration (optional)</div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
+<div class="param">end_of_fade_in (optional)</div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
+<div class="param">hotness (optional)</div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
+<div class="param">key (optional)</div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
+<div class="param">key_confidence (optional)</div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
+<div class="param">loudness (optional)</div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
+<div class="param">mode (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  format: int32</div>
+<div class="param">mode_confidence (optional)</div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
+<div class="param">start_of_fade_out (optional)</div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
+<div class="param">tatums_confidence (optional)</div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
+<div class="param">tatums_start (optional)</div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
+<div class="param">tempo (optional)</div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
+<div class="param">time_signature (optional)</div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
+<div class="param">time_signature_confidence (optional)</div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
+<div class="param">title (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  format: int32</div>
+<div class="param">year (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  format: int3</div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="Statistic"><code>Statistic</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">mean (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">median (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">standard deviation (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  </body>
+</html>
