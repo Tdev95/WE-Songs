@@ -1,7 +1,7 @@
 from flask import Blueprint, request, abort, Response
 from contextlib import contextmanager
-import json
 import collections
+import json
 
 
 @contextmanager
@@ -75,35 +75,71 @@ def construct_blueprint(mysql):
         # sorting
         if 'sort' in valid_args:
             if valid_args['sort'] == 'hotness':
-                query += ' ORDER BY hotttnesss'  # TODO: spelling
+                query += ' ORDER BY hotttnesss'  # TODO: database spelling
             if valid_args['sort'] == 'familiarity':
                 query += ' ORDER BY familiarity'
 
         # pagination
         if 'page' in valid_args:
-            query += ' LIMIT 50 offset ' + str(int(valid_args['page']) * 50) + ';'
+            query += ' LIMIT 50 offset ' + str((int(valid_args['page'])-1) * 50) + ';'
+        else:
+            query += ' LIMIT 50 offset 0;'
 
-        # print(query)
+        # content negotiation flag
+        mimetypes = request.accept_mimetypes
+
+        representation = 'text/json'
+        if ('text/json' not in mimetypes) and ('text/csv' in mimetypes):
+            representation = 'text/csv'
+
         # format query result
+
         try:
             with execute_query(mysql, query) as rows:
-                print(str(rows))
-                list = []
-                for row in rows:
-                    d = collections.OrderedDict()
-                    d['id'] = row[0]
-                    d['familiarity'] = row[1]
-                    d['hotness'] = row[2]
-                    d['lattitude'] = row[3]
-                    d['location'] = row[4]
-                    d['longitude'] = row[5]
-                    d['name'] = row[6]
-                    d['similar'] = row[7]
-                    d['terms'] = row[8]
-                    d['terms_freq'] = row[9]
-                    list.append(d)
-                return(json.dumps(list))
-        except Exception:
+                response = Response()
+
+                if representation == 'text/json':
+                    # format to json
+                    list = []
+                    for row in rows:
+                        d = collections.OrderedDict()
+                        d['id'] = row[0]
+                        d['familiarity'] = row[1]
+                        d['hotness'] = row[2]
+                        d['lattitude'] = row[3]
+                        d['location'] = row[4]
+                        d['longitude'] = row[5]
+                        d['name'] = row[6]
+                        d['similar'] = row[7]
+                        d['terms'] = row[8]
+                        d['terms_freq'] = row[9]
+                        list.append(d)
+
+                    response.set_data(json.dumps(list))
+                    response.headers['content-type'] = 'text/json'
+                else:
+                    # format to csv
+                    delim = ' '
+                    newline = '\n'
+                    csv = 'id' + delim + 'familiarity' + delim + 'hotness' + delim + 'lattitude' + delim + 'location' + \
+                        delim + 'longitude' + delim + 'name' + delim + 'similar' + \
+                        delim + 'terms' + delim + 'terms_freq' + newline
+                    for row in rows:
+                        csv += row[0] + delim  # id
+                        csv += str(row[1]) + delim  # familiarity
+                        csv += str(row[2]) + delim  # hotness
+                        csv += str(row[3]) + delim  # lattitude
+                        csv += str(row[4]) + delim  # location
+                        csv += str(row[5]) + delim  # longitude
+                        csv += '"' + row[6] + '"' + delim  # name
+                        csv += str(row[7]) + delim  # similar
+                        csv += '"' + row[8] + '"' + delim  # terms
+                        csv += str(row[9]) + newline  # terms_freq
+                    response.set_data(str(csv))
+                    response.headers['content-type'] = 'text/csv'
+                response.status = '200'
+                return response
+        except ValueError:
             # bad request if query fails
             abort(400)
 
