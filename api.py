@@ -19,12 +19,7 @@ def construct_blueprint(mysql):
     api = Blueprint('api', __name__)
 
     @api.route('/test/', methods=['GET', 'POST'])
-    def sql():
-        # print URL arguments
-        print(request.args)
-
-        # print supported mimetypes for content negotiation
-        print(request.accept_mimetypes)
+    def test():
 
         with execute_query(mysql, 'SELECT * FROM artist;') as rv:
             print(rv)
@@ -33,11 +28,14 @@ def construct_blueprint(mysql):
     @api.route('/artists', methods=['GET'])
     def artists():
         '''
-        id
-        name
-        genre
-        sort
-        page
+        returns a set of artists, providing detailed information about each artist
+
+        request parameters:
+        id: artist ID
+        name: (part of) artist's name
+        genre: (part of) artists genre
+        sort: sort by either artist hotness or familiarity
+        page: page number, each page shows a maximum of 50 results
         '''
         args = request.args
 
@@ -80,10 +78,10 @@ def construct_blueprint(mysql):
                 query += ' ORDER BY familiarity'
 
         # pagination
+        page = 1
         if 'page' in valid_args:
-            query += ' LIMIT 50 offset ' + str((int(valid_args['page'])-1) * 50) + ';'
-        else:
-            query += ' LIMIT 50 offset 0;'
+            page = int(valid_args['page'])
+        query += ' LIMIT 50 offset ' + str((page-1) * 50) + ';'
 
         # content negotiation flag
         mimetypes = request.accept_mimetypes
@@ -138,8 +136,9 @@ def construct_blueprint(mysql):
                     response.set_data(str(csv))
                     response.headers['content-type'] = 'text/csv'
                 response.status = '200'
+                # TODO: add header linking any other pages
                 return response
-        except ValueError:
+        except Exception:
             # bad request if query fails
             abort(400)
 
@@ -158,9 +157,13 @@ def construct_blueprint(mysql):
 
     @api.route('/stats', methods=['GET'])
     def stats():
-        response = Response("test data")
-        response.status = '501'
-        response.headers['Access-Control-Allow-Origin'] = '*'
-        return response
+        abort(501)
 
+    @api.route('/keys')
+    def keys():
+        abort(501)
+
+    @api.route('/genres')
+    def genres():
+        abort(501)
     return api
