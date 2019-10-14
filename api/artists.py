@@ -1,31 +1,15 @@
 from flask import Blueprint, request, abort, Response
-from contextlib import contextmanager
 import collections
 import json
 
-
-@contextmanager
-def execute_query(db, query):
-    '''query context manager'''
-    cursor = db.connection.cursor()
-    cursor.execute(query)
-    db.connection.commit()
-    yield cursor.fetchall()
-    cursor.close()
+from util import execute_query
 
 
 def construct_blueprint(mysql):
     '''constructs blueprint'''
-    api = Blueprint('api', __name__)
+    blueprint = Blueprint('artists', __name__)
 
-    @api.route('/test/', methods=['GET', 'POST'])
-    def test():
-
-        with execute_query(mysql, 'SELECT * FROM artist;') as rv:
-            print(rv)
-            return str(rv)
-
-    @api.route('/artists', methods=['GET'])
+    @blueprint.route('/artists', methods=['GET'])
     def artists():
         '''
         returns a set of artists, providing detailed information about each artist
@@ -141,29 +125,4 @@ def construct_blueprint(mysql):
         except Exception:
             # bad request if query fails
             abort(400)
-
-    @api.route('/songs', methods=['DELETE', 'GET', 'POST', 'PUT'])
-    def songs():
-        if request.method == 'DELETE':
-            abort(501)
-        elif request.method == 'GET':
-            abort(501)
-        elif request.method == 'POST':
-            # is json
-            print(request.is_json)
-            abort(501)
-        elif request.method == 'PUT':
-            abort(501)
-
-    @api.route('/stats', methods=['GET'])
-    def stats():
-        abort(501)
-
-    @api.route('/keys')
-    def keys():
-        abort(501)
-
-    @api.route('/genres')
-    def genres():
-        abort(501)
-    return api
+    return blueprint
