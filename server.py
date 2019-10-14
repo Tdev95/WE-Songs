@@ -15,10 +15,10 @@ from api import stats
 # create application instance and set configuration variables
 
 app = Flask(__name__)
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'root'
-app.config['MYSQL_DB'] = 'webengineering'
+app.config['MYSQL_HOST'] = config.mysql_host
+app.config['MYSQL_USER'] = config.mysql_user
+app.config['MYSQL_PASSWORD'] = config.mysql_password
+app.config['MYSQL_DB'] = config.mysql_db
 
 mysql = MySQL(app)
 
