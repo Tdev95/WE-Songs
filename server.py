@@ -1,10 +1,10 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_mysqldb import MySQL
 
 import config
 
 
-# endpoint blueprints
+# api endpoint blueprints
 from api import artists
 from api import genres
 from api import keys
@@ -22,12 +22,17 @@ app.config['MYSQL_DB'] = config.mysql_db
 
 mysql = MySQL(app)
 
-# register endpoints
+# register api endpoints
 app.register_blueprint(artists.construct_blueprint(mysql))
 app.register_blueprint(genres.construct_blueprint(mysql))
 app.register_blueprint(keys.construct_blueprint(mysql))
 app.register_blueprint(songs.construct_blueprint(mysql))
 app.register_blueprint(stats.construct_blueprint(mysql))
+
+
+@app.route('/home', methods=['GET'])
+def home():
+    return render_template('home.html')
 
 
 # run application if standalone mode
