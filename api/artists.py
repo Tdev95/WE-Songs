@@ -1,8 +1,26 @@
-from flask import Blueprint, request, abort, Response
+from flask import Blueprint, request, abort, Response, redirect
 import collections
 import json
+import util
 
-from util import execute_query
+
+def valid_url(valid_args):
+    '''builds a valid url given a set of valid arguments'''
+    url = ''
+    if 'id' in valid_args:
+        url += 'id=' + valid_args['id'] + '&'
+    if 'name' in valid_args:
+        url += 'name=' + valid_args['name'] + '&'
+    if 'genre' in valid_args:
+        url += 'genre=' + valid_args['genre'] + '&'
+    if 'sort' in valid_args:
+        url += 'sort=' + valid_args['sort'] + '&'
+    if 'page' in valid_args:
+        url += 'page=' + valid_args['page'] + '&'
+    if url != '':
+        url = '?' + url[0:(len(url)-1)]
+    url = '/artists' + url
+    return url
 
 
 def construct_blueprint(mysql):
@@ -23,7 +41,23 @@ def construct_blueprint(mysql):
         '''
         args = request.args
 
-        valid_args = args  # TODO: add validity checking or risk injection attacks
+        nc = util.NameConstraint(['id', 'name', 'genre', 'sort', 'page'])
+        constraints = {
+            'id': [nc, util.TypeConstraint('str'), util.LengthConstraint(18, 18)],
+            'name': [nc, util.TypeConstraint('str')],
+            'genre': [nc, util.TypeConstraint('str')],
+            'sort': [nc, util.ValueConstraint(['hotness', 'familiarity'])],
+            'page': [nc, util.TypeConstraint('int')]
+        }
+
+        # TODO: add validity checking or risk injection attacks
+        valid_args = util.sanitize(args, constraints)
+
+        # if some arguments are invalid, redirect to page with only valid args
+        if set(valid_args.keys()) != set(args.keys()):
+            # print('warning: invalid args removed')
+            url = valid_url(valid_args)
+            return redirect(url, code=303)
 
         # flag used to detect whether WHERE clause was used
         where = False
@@ -77,7 +111,7 @@ def construct_blueprint(mysql):
         # format query result
 
         try:
-            with execute_query(mysql, query) as rows:
+            with util.execute_query(mysql, query) as rows:
                 response = Response()
 
                 if representation == 'text/json':
