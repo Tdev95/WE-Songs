@@ -1,8 +1,6 @@
 from flask import Flask, render_template
 from flask_mysqldb import MySQL
-
 import config
-
 
 # api endpoint blueprints
 from api import artists
@@ -10,7 +8,6 @@ from api import genres
 from api import keys
 from api import songs
 from api import stats
-
 
 # create application instance and set configuration variables
 
@@ -20,6 +17,7 @@ app.config['MYSQL_USER'] = config.mysql_user
 app.config['MYSQL_PASSWORD'] = config.mysql_password
 app.config['MYSQL_DB'] = config.mysql_db
 
+# connect app to database
 mysql = MySQL(app)
 
 # register api endpoints

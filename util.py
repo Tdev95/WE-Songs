@@ -9,3 +9,87 @@ def execute_query(db, query):
     db.connection.commit()
     yield cursor.fetchall()
     cursor.close()
+
+
+def sanitize(args, constraints):
+    valid_args = {}
+    for arg in args.keys():
+        valid_args[arg] = args[arg]
+        if arg in constraints:
+            acs = constraints[arg]
+            for ac in acs:
+                if not ac.check(arg, args[arg]):
+                    del valid_args[arg]
+                    print("check failed: '" + str(arg) + "' : '" + str(args[arg]) + "'")
+                    break
+    return valid_args
+
+# Constraints are used to check whether text input is valid
+
+
+class Constraint():
+    def check(self, input):
+        pass
+
+
+class TypeConstraint(Constraint):
+    supported_types = ['int', 'str', 'float']
+
+    def __init__(self, type):
+        self.type = type
+        if self.type not in self.supported_types:
+            raise TypeError('Type is not supported.')
+
+    def check(self, name, input):
+        '''returns True iff input is a valid instance of the defined type'''
+        # str
+        if(self.type == 'str'):
+            for char in input:
+                n = ord(char)
+                if not ((n >= ord('a') and n <= ord('z'))
+                        or (n >= ord('A') and n <= ord('Z'))
+                        or (n >= ord('0') and n <= ord('9'))):
+                    return False
+        if(self.type == 'int'):
+            for char in input:
+                n = ord(char)
+                if not (n >= ord('0') and n <= ord('9')):
+                    return False
+        if(self.type == 'float'):
+            dot = False
+            for char in input:
+                n = ord(char)
+                if not (n >= ord('0') and n <= ord('9')):
+                    if(not dot and n == ord('.')):
+                        dot = True
+                    else:
+                        return False
+        return True
+
+
+class LengthConstraint(Constraint):
+    def __init__(self, min, max):
+        self.min = min
+        self.max = max
+
+    def check(self, name, input):
+        '''returns True iff input length is in the range [self.min, self.max]'''
+        if len(input) >= self.min and len(input) <= self.max:
+            return True
+        return False
+
+
+class NameConstraint(Constraint):
+    def __init__(self, valid_names):
+        self.valid_names = valid_names
+
+    def check(self, name, input):
+        return name in self.valid_names
+
+
+class ValueConstraint(Constraint):
+    def __init__(self, valid_values):
+        self.valid_values = valid_values
+
+    def check(self, name, input):
+        return input in self.valid_values
