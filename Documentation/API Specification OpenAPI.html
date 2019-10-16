@@ -199,8 +199,8 @@
   <div class="method-summary"></div>
   <h4><a href="#Artist">Artist</a></h4>
   <ul>
-  <li><a href="#artistsGet"><code><span class="http-method">get</span> /artists</code></a></li>
   <li><a href="#getArtistById"><code><span class="http-method">get</span> /artists/{artistId}</code></a></li>
+  <li><a href="#getArtists"><code><span class="http-method">get</span> /arists</code></a></li>
   </ul>
   <h4><a href="#Histogram">Histogram</a></h4>
   <ul>
@@ -208,12 +208,12 @@
   </ul>
   <h4><a href="#Song">Song</a></h4>
   <ul>
-  <li><a href="#addSong"><code><span class="http-method">put</span> /songs</code></a></li>
-  <li><a href="#deleteSong"><code><span class="http-method">delete</span> /songs/{songId}</code></a></li>
-  <li><a href="#getAllSongs"><code><span class="http-method">get</span> /songs</code></a></li>
+  <li><a href="#deleteSongById"><code><span class="http-method">delete</span> /songs/{songId}</code></a></li>
   <li><a href="#getSongById"><code><span class="http-method">get</span> /songs/{songId}</code></a></li>
+  <li><a href="#getSongs"><code><span class="http-method">get</span> /songs</code></a></li>
   <li><a href="#patchSong"><code><span class="http-method">patch</span> /songs/{songId}</code></a></li>
-  <li><a href="#updateSongWithForm"><code><span class="http-method">post</span> /songs/{songId}</code></a></li>
+  <li><a href="#postSong"><code><span class="http-method">post</span> /songs</code></a></li>
+  <li><a href="#putSongById"><code><span class="http-method">put</span> /songs/{songId}</code></a></li>
   </ul>
   <h4><a href="#Statistic">Statistic</a></h4>
   <ul>
@@ -221,11 +221,72 @@
   </ul>
 
   <h1><a name="Artist">Artist</a></h1>
-  <div class="method"><a name="artistsGet"></a>
+  <div class="method"><a name="getArtistById"></a>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="get"><code class="huge"><span class="http-method">get</span> /artists</code></pre></div>
-    <div class="method-summary">Get some artists (<span class="nickname">artistsGet</span>)</div>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /artists/{artistId}</code></pre></div>
+    <div class="method-summary">Find artist by ID (<span class="nickname">getArtistById</span>)</div>
+    <div class="method-notes">Returns a single artist specified by an ID</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">artistId (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Unique dataset ID of an artist </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#Artist">Artist</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "similar" : 2.302136,
+  "familiarity" : 0.08008282,
+  "terms" : "terms",
+  "latitude" : 1.4658129,
+  "name" : "name",
+  "location" : 5,
+  "id" : "id",
+  "hotness" : 0.6027456,
+  "terms_freq" : 7.0614014,
+  "longitude" : 5.962134
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+      <li><code>text/csv</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Successful operation
+        <a href="#Artist">Artist</a>
+    <h4 class="field-label">400</h4>
+    Invalid artistId value
+        <a href="#"></a>
+    <h4 class="field-label">404</h4>
+    This artist does not exist
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getArtists"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /arists</code></pre></div>
+    <div class="method-summary">Get some artists (<span class="nickname">getArtists</span>)</div>
     <div class="method-notes">Returns a list of all artists in the dataset, optionally filtered by artist name and/or genre</div>
 
 
@@ -234,15 +295,13 @@
 
     <h3 class="field-label">Query parameters</h3>
     <div class="field-items">
-      <div class="param">artist name (optional)</div>
+      <div class="param">name (optional)</div>
       
             <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; The name of the artist </div>      <div class="param">genre (optional)</div>
       
             <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; The genre of the song </div>      <div class="param">sort (optional)</div>
       
-            <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Sort artists by hotttnesss </div>      <div class="param">page (optional)</div>
-      
-            <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Current page </div>    </div>  <!-- field-items -->
+            <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Sort the artists by their popularity (hotttnesss value) </div>    </div>  <!-- field-items -->
 
 
     <h3 class="field-label">Return type</h3>
@@ -292,68 +351,7 @@
     Successful operation
         
     <h4 class="field-label">400</h4>
-    Invalid value(s)
-        <a href="#"></a>
-  </div> <!-- method -->
-  <hr/>
-  <div class="method"><a name="getArtistById"></a>
-    <div class="method-path">
-    <a class="up" href="#__Methods">Up</a>
-    <pre class="get"><code class="huge"><span class="http-method">get</span> /artists/{artistId}</code></pre></div>
-    <div class="method-summary">Get an artist (<span class="nickname">getArtistById</span>)</div>
-    <div class="method-notes">Returns a single artist in the dataset specified by its ID</div>
-
-    <h3 class="field-label">Path parameters</h3>
-    <div class="field-items">
-      <div class="param">artistId (required)</div>
-      
-            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Id of the artist </div>    </div>  <!-- field-items -->
-
-
-
-
-
-
-    <h3 class="field-label">Return type</h3>
-    <div class="return-type">
-      <a href="#Artist">Artist</a>
-      
-    </div>
-
-    <!--Todo: process Response Object and its headers, schema, examples -->
-
-    <h3 class="field-label">Example data</h3>
-    <div class="example-data-content-type">Content-Type: application/json</div>
-    <pre class="example"><code>{
-  "similar" : 2.302136,
-  "familiarity" : 0.08008282,
-  "terms" : "terms",
-  "latitude" : 1.4658129,
-  "name" : "name",
-  "location" : 5,
-  "id" : "id",
-  "hotness" : 0.6027456,
-  "terms_freq" : 7.0614014,
-  "longitude" : 5.962134
-}</code></pre>
-
-    <h3 class="field-label">Produces</h3>
-    This API call produces the following media types according to the <span class="header">Accept</span> request header;
-    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
-    <ul>
-      <li><code>application/json</code></li>
-      <li><code>text/csv</code></li>
-    </ul>
-
-    <h3 class="field-label">Responses</h3>
-    <h4 class="field-label">200</h4>
-    Successful operation
-        <a href="#Artist">Artist</a>
-    <h4 class="field-label">400</h4>
-    Invalid artist ID value
-        <a href="#"></a>
-    <h4 class="field-label">404</h4>
-    This song does not exist
+    Invalid value
         <a href="#"></a>
   </div> <!-- method -->
   <hr/>
@@ -395,62 +393,23 @@
 
     <h3 class="field-label">Responses</h3>
     <h4 class="field-label">200</h4>
-    successful operation
+    Successful operation
         <a href="#Histogram">Histogram</a>
   </div> <!-- method -->
   <hr/>
   <h1><a name="Song">Song</a></h1>
-  <div class="method"><a name="addSong"></a>
-    <div class="method-path">
-    <a class="up" href="#__Methods">Up</a>
-    <pre class="put"><code class="huge"><span class="http-method">put</span> /songs</code></pre></div>
-    <div class="method-summary">Add a new song to the dataset (<span class="nickname">addSong</span>)</div>
-    <div class="method-notes"></div>
-
-
-    <h3 class="field-label">Consumes</h3>
-    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
-    <ul>
-      <li><code>application/json</code></li>
-      <li><code>text/csv</code></li>
-    </ul>
-
-    <h3 class="field-label">Request body</h3>
-    <div class="field-items">
-      <div class="param">body <a href="#Song">Song</a> (required)</div>
-      
-            <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash; Song object that needs to be added to the dataset </div>
-                </div>  <!-- field-items -->
-
-
-
-
-
-    <!--Todo: process Response Object and its headers, schema, examples -->
-
-
-
-    <h3 class="field-label">Responses</h3>
-    <h4 class="field-label">201</h4>
-    Song succesfully created
-        <a href="#"></a>
-    <h4 class="field-label">400</h4>
-    Song could not have been created
-        <a href="#"></a>
-  </div> <!-- method -->
-  <hr/>
-  <div class="method"><a name="deleteSong"></a>
+  <div class="method"><a name="deleteSongById"></a>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
     <pre class="delete"><code class="huge"><span class="http-method">delete</span> /songs/{songId}</code></pre></div>
-    <div class="method-summary">Deletes a song (<span class="nickname">deleteSong</span>)</div>
-    <div class="method-notes"></div>
+    <div class="method-summary">Delete song by ID (<span class="nickname">deleteSongById</span>)</div>
+    <div class="method-notes">Deletes song with songId from the dataset</div>
 
     <h3 class="field-label">Path parameters</h3>
     <div class="field-items">
       <div class="param">songId (required)</div>
       
-            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Song id to delete </div>    </div>  <!-- field-items -->
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Song with id songId to delete </div>    </div>  <!-- field-items -->
 
 
 
@@ -464,18 +423,104 @@
 
     <h3 class="field-label">Responses</h3>
     <h4 class="field-label">201</h4>
-    Item deleted/not found
+    Song deleted/not found
         <a href="#"></a>
     <h4 class="field-label">404</h4>
-    Song not found
+    This song does not exist
         <a href="#"></a>
   </div> <!-- method -->
   <hr/>
-  <div class="method"><a name="getAllSongs"></a>
+  <div class="method"><a name="getSongById"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /songs/{songId}</code></pre></div>
+    <div class="method-summary">Find song by ID (<span class="nickname">getSongById</span>)</div>
+    <div class="method-notes">Returns a single song specified by its ID</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">songId (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Unique dataset ID of a song </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#Song">Song</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "mode_confidence" : 1.0246457,
+  "artist" : {
+    "similar" : 2.302136,
+    "familiarity" : 0.08008282,
+    "terms" : "terms",
+    "latitude" : 1.4658129,
+    "name" : "name",
+    "location" : 5,
+    "id" : "id",
+    "hotness" : 0.6027456,
+    "terms_freq" : 7.0614014,
+    "longitude" : 5.962134
+  },
+  "artist_mbta_count" : 6.0274563,
+  "beats_confidence" : 5.637377,
+  "year" : 9,
+  "bars_start" : 5.962134,
+  "loudness" : 7.386282,
+  "tempo" : 1.1730742,
+  "end_of_fade_in" : 9.301444,
+  "hotness" : 3.6160767,
+  "title" : 9,
+  "key_confidence" : 4.145608,
+  "bars_confidence" : 1.4658129,
+  "beats_start" : 2.302136,
+  "duration" : 7.0614014,
+  "mode" : 1,
+  "start_of_fade_out" : 1.4894159,
+  "id" : "id",
+  "time_signature_confidence" : 5.025005,
+  "artist_mbta" : 0.8008282,
+  "tatums_confidence" : 6.846853,
+  "key" : 2.027123,
+  "tatums_start" : 7.4577446,
+  "time_signature" : 4.9652185
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+      <li><code>text/csv</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Successful operation
+        <a href="#Song">Song</a>
+    <h4 class="field-label">400</h4>
+    Invalid songId value
+        <a href="#"></a>
+    <h4 class="field-label">404</h4>
+    This artist does not exist
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getSongs"></a>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
     <pre class="get"><code class="huge"><span class="http-method">get</span> /songs</code></pre></div>
-    <div class="method-summary">All songs by a specific artist and/or in specific year (<span class="nickname">getAllSongs</span>)</div>
+    <div class="method-summary">All songs by a specific artist and/or in specific year (<span class="nickname">getSongs</span>)</div>
     <div class="method-notes"></div>
 
 
@@ -484,7 +529,7 @@
 
     <h3 class="field-label">Query parameters</h3>
     <div class="field-items">
-      <div class="param">artist (optional)</div>
+      <div class="param">artistName (optional)</div>
       
             <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; The name of the artist who made the song </div>      <div class="param">year (optional)</div>
       
@@ -492,9 +537,9 @@
       
             <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; The genre of the song/artist </div>      <div class="param">sort (optional)</div>
       
-            <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Sort the list of songs </div>      <div class="param">subset (optional)</div>
+            <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Sort the song by their popularity (hotttnesss value) </div>      <div class="param">subset (optional)</div>
       
-            <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; The subset, e.g. top 50 </div>    </div>  <!-- field-items -->
+            <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; The subset (e.g. top 50) </div>    </div>  <!-- field-items -->
 
 
     <h3 class="field-label">Return type</h3>
@@ -591,96 +636,10 @@
 
     <h3 class="field-label">Responses</h3>
     <h4 class="field-label">200</h4>
-    successful operation
+    Successful operation
         
     <h4 class="field-label">400</h4>
-    Invalid year/genre value
-        <a href="#"></a>
-  </div> <!-- method -->
-  <hr/>
-  <div class="method"><a name="getSongById"></a>
-    <div class="method-path">
-    <a class="up" href="#__Methods">Up</a>
-    <pre class="get"><code class="huge"><span class="http-method">get</span> /songs/{songId}</code></pre></div>
-    <div class="method-summary">Find song by ID (<span class="nickname">getSongById</span>)</div>
-    <div class="method-notes">Returns a single song</div>
-
-    <h3 class="field-label">Path parameters</h3>
-    <div class="field-items">
-      <div class="param">songId (required)</div>
-      
-            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Unique dataset ID of a song </div>    </div>  <!-- field-items -->
-
-
-
-
-
-
-    <h3 class="field-label">Return type</h3>
-    <div class="return-type">
-      <a href="#Song">Song</a>
-      
-    </div>
-
-    <!--Todo: process Response Object and its headers, schema, examples -->
-
-    <h3 class="field-label">Example data</h3>
-    <div class="example-data-content-type">Content-Type: application/json</div>
-    <pre class="example"><code>{
-  "mode_confidence" : 1.0246457,
-  "artist" : {
-    "similar" : 2.302136,
-    "familiarity" : 0.08008282,
-    "terms" : "terms",
-    "latitude" : 1.4658129,
-    "name" : "name",
-    "location" : 5,
-    "id" : "id",
-    "hotness" : 0.6027456,
-    "terms_freq" : 7.0614014,
-    "longitude" : 5.962134
-  },
-  "artist_mbta_count" : 6.0274563,
-  "beats_confidence" : 5.637377,
-  "year" : 9,
-  "bars_start" : 5.962134,
-  "loudness" : 7.386282,
-  "tempo" : 1.1730742,
-  "end_of_fade_in" : 9.301444,
-  "hotness" : 3.6160767,
-  "title" : 9,
-  "key_confidence" : 4.145608,
-  "bars_confidence" : 1.4658129,
-  "beats_start" : 2.302136,
-  "duration" : 7.0614014,
-  "mode" : 1,
-  "start_of_fade_out" : 1.4894159,
-  "id" : "id",
-  "time_signature_confidence" : 5.025005,
-  "artist_mbta" : 0.8008282,
-  "tatums_confidence" : 6.846853,
-  "key" : 2.027123,
-  "tatums_start" : 7.4577446,
-  "time_signature" : 4.9652185
-}</code></pre>
-
-    <h3 class="field-label">Produces</h3>
-    This API call produces the following media types according to the <span class="header">Accept</span> request header;
-    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
-    <ul>
-      <li><code>application/json</code></li>
-      <li><code>text/csv</code></li>
-    </ul>
-
-    <h3 class="field-label">Responses</h3>
-    <h4 class="field-label">200</h4>
-    Successful operation
-        <a href="#Song">Song</a>
-    <h4 class="field-label">400</h4>
-    Invalid song ID value
-        <a href="#"></a>
-    <h4 class="field-label">404</h4>
-    This song does not exist
+    Invalid value(s)
         <a href="#"></a>
   </div> <!-- method -->
   <hr/>
@@ -688,8 +647,8 @@
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
     <pre class="patch"><code class="huge"><span class="http-method">patch</span> /songs/{songId}</code></pre></div>
-    <div class="method-summary">Updates some fields of a song (<span class="nickname">patchSong</span>)</div>
-    <div class="method-notes"></div>
+    <div class="method-summary">Update (part of) song by ID (<span class="nickname">patchSong</span>)</div>
+    <div class="method-notes">Update some fields of a song specified by its ID</div>
 
     <h3 class="field-label">Path parameters</h3>
     <div class="field-items">
@@ -779,12 +738,51 @@
         <a href="#"></a>
   </div> <!-- method -->
   <hr/>
-  <div class="method"><a name="updateSongWithForm"></a>
+  <div class="method"><a name="postSong"></a>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="post"><code class="huge"><span class="http-method">post</span> /songs/{songId}</code></pre></div>
-    <div class="method-summary">Updates a song in the dataset with form data (<span class="nickname">updateSongWithForm</span>)</div>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /songs</code></pre></div>
+    <div class="method-summary">Add a new song to the dataset (<span class="nickname">postSong</span>)</div>
     <div class="method-notes"></div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+      <li><code>text/csv</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">body <a href="#Song">Song</a> (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash; Song object that needs to be added to the dataset </div>
+                </div>  <!-- field-items -->
+
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">201</h4>
+    Song succesfully created
+        <a href="#"></a>
+    <h4 class="field-label">400</h4>
+    Song could not have been created
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="putSongById"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="put"><code class="huge"><span class="http-method">put</span> /songs/{songId}</code></pre></div>
+    <div class="method-summary">Update (whole) song by ID (<span class="nickname">putSongById</span>)</div>
+    <div class="method-notes">Updates all fields of a song specified by its ID</div>
 
     <h3 class="field-label">Path parameters</h3>
     <div class="field-items">
@@ -797,14 +795,68 @@
 
 
 
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#Song">Song</a>
+      
+    </div>
 
     <!--Todo: process Response Object and its headers, schema, examples -->
 
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "mode_confidence" : 1.0246457,
+  "artist" : {
+    "similar" : 2.302136,
+    "familiarity" : 0.08008282,
+    "terms" : "terms",
+    "latitude" : 1.4658129,
+    "name" : "name",
+    "location" : 5,
+    "id" : "id",
+    "hotness" : 0.6027456,
+    "terms_freq" : 7.0614014,
+    "longitude" : 5.962134
+  },
+  "artist_mbta_count" : 6.0274563,
+  "beats_confidence" : 5.637377,
+  "year" : 9,
+  "bars_start" : 5.962134,
+  "loudness" : 7.386282,
+  "tempo" : 1.1730742,
+  "end_of_fade_in" : 9.301444,
+  "hotness" : 3.6160767,
+  "title" : 9,
+  "key_confidence" : 4.145608,
+  "bars_confidence" : 1.4658129,
+  "beats_start" : 2.302136,
+  "duration" : 7.0614014,
+  "mode" : 1,
+  "start_of_fade_out" : 1.4894159,
+  "id" : "id",
+  "time_signature_confidence" : 5.025005,
+  "artist_mbta" : 0.8008282,
+  "tatums_confidence" : 6.846853,
+  "key" : 2.027123,
+  "tatums_start" : 7.4577446,
+  "time_signature" : 4.9652185
+}</code></pre>
 
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+      <li><code>text/csv</code></li>
+    </ul>
 
     <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Successful operation
+        <a href="#Song">Song</a>
     <h4 class="field-label">400</h4>
-    Invalid input
+    Invalid songId
         <a href="#"></a>
     <h4 class="field-label">404</h4>
     This song does not exist
@@ -834,7 +886,7 @@
 
     <h3 class="field-label">Return type</h3>
     <div class="return-type">
-      array[<a href="#Statistic">Statistic</a>]
+      <a href="#Statistic">Statistic</a>
       
     </div>
 
@@ -842,15 +894,11 @@
 
     <h3 class="field-label">Example data</h3>
     <div class="example-data-content-type">Content-Type: application/json</div>
-    <pre class="example"><code>[ {
-  "median" : 6.027456183070403,
-  "mean" : 0.8008281904610115,
-  "standard deviation" : 1.4658129805029452
-}, {
-  "median" : 6.027456183070403,
-  "mean" : 0.8008281904610115,
-  "standard deviation" : 1.4658129805029452
-} ]</code></pre>
+    <pre class="example"><code>{
+  "median" : 6.0274563,
+  "mean" : 0.8008282,
+  "standard deviation" : 1.4658129
+}</code></pre>
 
     <h3 class="field-label">Produces</h3>
     This API call produces the following media types according to the <span class="header">Accept</span> request header;
@@ -863,9 +911,9 @@
     <h3 class="field-label">Responses</h3>
     <h4 class="field-label">200</h4>
     successful operation
-        
+        <a href="#Statistic">Statistic</a>
     <h4 class="field-label">400</h4>
-    Invalid year value
+    Invalid value(s)
         <a href="#"></a>
   </div> <!-- method -->
   <hr/>
@@ -940,9 +988,9 @@
     <h3><a name="Statistic"><code>Statistic</code></a> <a class="up" href="#__Models">Up</a></h3>
     
     <div class="field-items">
-      <div class="param">mean (optional)</div><div class="param-desc"><span class="param-type"><a href="#BigDecimal">BigDecimal</a></span>  </div>
-<div class="param">median (optional)</div><div class="param-desc"><span class="param-type"><a href="#BigDecimal">BigDecimal</a></span>  </div>
-<div class="param">standard deviation (optional)</div><div class="param-desc"><span class="param-type"><a href="#BigDecimal">BigDecimal</a></span>  </div>
+      <div class="param">mean (optional)</div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
+<div class="param">median (optional)</div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
+<div class="param">standard deviation (optional)</div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
     </div>  <!-- field-items -->
   </div>
   </body>
