@@ -102,11 +102,7 @@ def construct_blueprint(mysql):
         query += ' LIMIT 50 offset ' + str((page-1) * 50) + ';'
 
         # content negotiation flag
-        mimetypes = request.accept_mimetypes
-
-        representation = 'text/json'
-        if ('text/json' not in mimetypes) and ('text/csv' in mimetypes):
-            representation = 'text/csv'
+        representation = util.get_representation(request)
 
         # format query result
 

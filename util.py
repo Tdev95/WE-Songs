@@ -27,6 +27,15 @@ def sanitize(args, constraints):
 # Constraints are used to check whether text input is valid
 
 
+def get_representation(request):
+    mimetypes = request.accept_mimetypes
+
+    representation = 'text/json'
+    if ('text/json' not in mimetypes) and ('text/csv' in mimetypes):
+        representation = 'text/csv'
+    return representation
+
+
 class Constraint():
     def check(self, input):
         pass
