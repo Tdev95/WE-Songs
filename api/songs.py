@@ -41,6 +41,11 @@ def create_query(valid_args):
         query += 'artist_id IN (SELECT id AS artist_id FROM artist WHERE terms LIKE "%' + \
             valid_args['genre'] + '%")'
 
+    # popularity
+    if 'sort' in valid_args:
+        if valid_args['sort'] == 'hotness':
+            query += ' ORDER BY hotttnesss'  # TODO: database spelling
+
     # pagination
     page = 1
     if 'page' in valid_args:
@@ -166,7 +171,6 @@ def construct_blueprint(mysql):
 
             # create query
             query = create_query(valid_args)
-            print(query)
 
             # content negotiation flag
             representation = util.get_representation(request)
