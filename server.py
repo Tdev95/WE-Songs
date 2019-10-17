@@ -1,5 +1,5 @@
 from flask import Flask
-from api import api
+from api import construct_blueprint
 import config
 from flask_mysqldb import MySQL
 
@@ -10,18 +10,10 @@ app = Flask(__name__)
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'root'
-app.config['MYSQL_DB'] = 'MyDB'
-app.register_blueprint(api)
+app.config['MYSQL_DB'] = 'webengineering'
+
 mysql = MySQL(app)
-
-
-@app.route('/sql/', methods=['GET', 'POST'])
-def sql():
-    cur = mysql.connection.cursor()
-    cur.execute
-    mysql.connection.commit("INSERT INTO MyUsers(firstName, lastName) VALUES (X, Y)")
-    cur.close()
-    return 'success'
+app.register_blueprint(construct_blueprint(mysql))
 
 
 # run application if standalone mode
