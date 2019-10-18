@@ -1,6 +1,44 @@
-from flask import Blueprint, abort
+from flask import Blueprint, abort, request, Response
 
-from util import execute_query
+import util
+import collections
+import json
+
+
+def create_constraints():
+    nc = util.NameConstraint(['threshold', 'year'])
+    constraints = {
+        'threshold': [nc],
+        'year': [nc]
+    }
+    return constraints
+
+
+def create_query(valid_args):
+    query = 'SELECT terms, COUNT(*) FROM artist GROUP BY terms '
+    if 'threshold' in valid_args:
+        query += f'HAVING COUNT(*) >= {valid_args["threshold"]}'
+    query += ' ORDER BY COUNT(*) DESC;'
+    return query
+
+
+def format_json(rows):
+    list = []
+    for row in rows:
+        d = collections.OrderedDict()
+        d['genre'] = row[0]
+        d['count'] = row[1]
+        list.append(d)
+    return json.dumps(list)
+
+
+def format_csv(rows):
+    delim = ' '
+    newline = '\n'
+    csv = f'genre count {newline}'
+    for row in rows:
+        csv += f'"{row[0]}"{delim}{row[1]}{delim}{newline}'
+    return csv
 
 
 def construct_blueprint(mysql):
@@ -9,5 +47,25 @@ def construct_blueprint(mysql):
 
     @blueprint.route('/genres')
     def genres():
-        abort(501)
+        constraints = create_constraints()
+        valid_args = util.sanitize(request.args, constraints)
+        if valid_args.keys() != set(request.args.keys()):
+            abort(400)
+
+        query = create_query(valid_args)
+        representation = util.get_representation(request)
+        try:
+            with util.execute_query(mysql, query) as rows:
+                response = Response()
+                if representation == 'text/json':
+                    response.set_data(format_json(rows))
+                    response.headers['content-type'] = 'text/json'
+                else:
+                    response.set_data(format_csv(rows))
+                    response.headers['content-type'] = 'text/csv'
+                response.status = '200'
+                return response
+        except Exception:
+            # bad request
+            abort(400)
     return blueprint
