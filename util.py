@@ -102,3 +102,11 @@ class ValueConstraint(Constraint):
 
     def check(self, name, input):
         return input in self.valid_values
+
+
+class CustomConstraint(Constraint):
+    def __init__(self, function):
+        self.function = function
+
+    def check(self, name, input):
+        return self.function(name, input)
