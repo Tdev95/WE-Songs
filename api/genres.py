@@ -8,8 +8,8 @@ import json
 def create_constraints():
     nc = util.NameConstraint(['threshold', 'year'])
     constraints = {
-        'threshold': [nc],
-        'year': [nc]
+        'threshold': [nc, util.TypeConstraint('int')],
+        'year': [nc, util.TypeConstraint('int')]
     }
     return constraints
 
@@ -47,13 +47,24 @@ def construct_blueprint(mysql):
 
     @blueprint.route('/genres')
     def genres():
+        '''
+        returns a set of genre:count pairs for a set of songs
+
+        request parameters:
+        threshold: integer value describing the minimum number of songs needed for a genre to appear
+        '''
         constraints = create_constraints()
         valid_args = util.sanitize(request.args, constraints)
         if valid_args.keys() != set(request.args.keys()):
             abort(400)
 
+        # create query
         query = create_query(valid_args)
+
+        # content negotiation flag
         representation = util.get_representation(request)
+
+        # generate response
         try:
             with util.execute_query(mysql, query) as rows:
                 response = Response()
@@ -66,6 +77,6 @@ def construct_blueprint(mysql):
                 response.status = '200'
                 return response
         except Exception:
-            # bad request
+            # bad request if query fails
             abort(400)
     return blueprint

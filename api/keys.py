@@ -67,15 +67,26 @@ def construct_blueprint(mysql):
 
     @blueprint.route('/keys')
     def keys():
+        '''
+        returns a set of key:count pairs for a set of songs
+
+        request parameters:
+        genre: (part of) a string describing the genre
+        threshold: value between 0 and 1 as the lower limit for the popularity of songs
+        '''
         constraints = create_constraints()
         valid_args = util.sanitize(request.args, constraints)
 
         if(valid_args.keys() != set(request.args.keys())):
             abort(400)
 
+        # create query
         query = create_query(valid_args)
 
+        # content negotiation flag
         representation = util.get_representation(request)
+
+        # generate response
         try:
             with util.execute_query(mysql, query) as rows:
                 response = Response()
@@ -87,7 +98,7 @@ def construct_blueprint(mysql):
                     response.headers['content-type'] = 'text/csv'
                 response.status = '200'
                 return response
-        except ValueError:
+        except Exception:
+            # bad request if query fails
             abort(400)
-
     return blueprint

@@ -4,6 +4,19 @@ import json
 import util
 
 
+def create_constraints():
+    nc = util.NameConstraint(['id', 'genre', 'release', 'artist', 'year', 'page'])
+    constraints = {
+        'id': [nc, util.TypeConstraint('str'), util.LengthConstraint(18, 18)],
+        'genre': [nc, util.TypeConstraint('str')],
+        'release': [nc, util.TypeConstraint('int')],
+        'artist': [nc, util.TypeConstraint('str'), util.LengthConstraint(18, 18)],
+        'year': [nc, util.TypeConstraint('int')],
+        'page': [nc, util.TypeConstraint('int')]
+    }
+    return constraints
+
+
 def create_query(valid_args):
 
     where = False
@@ -15,6 +28,14 @@ def create_query(valid_args):
             query += ' WHERE '
             where = True
         query += 'id = "' + valid_args['id'] + '"'
+
+    if 'artist' in valid_args:
+        if not where:
+            query += ' WHERE '
+            where = True
+        else:
+            query += ' AND '
+        query += f'artist_id = "{valid_args["artist"]}"'
 
     if 'release' in valid_args:
         if not where:
@@ -151,20 +172,25 @@ def construct_blueprint(mysql):
 
     @blueprint.route('/songs', methods=['DELETE', 'GET', 'POST', 'PUT'])
     def songs():
+        '''
+        returns a set of songs, providing detailed information about each song
+
+        request parameters:
+        id: song ID to filter by
+        artist: artist ID to filter by
+        release: release ID to filter by
+        year: year of release
+        genre: (part of) artists genre
+        page: page number, each page shows a maximum of 50 results
+        '''
+
         if request.method == 'DELETE':
             abort(501)
         elif request.method == 'GET':
             # sanitize input
-            nc = util.NameConstraint(['id', 'genre', 'release', 'artist', 'year', 'page'])
-            constraints = {
-                'id': [nc],
-                'genre': [nc],
-                'release': [nc],
-                'artist': [nc],
-                'year': [nc],
-                'page': [nc]
-            }
+            constraints = create_constraints()
             valid_args = util.sanitize(request.args, constraints)
+
             # abort if bad request
             if(valid_args.keys() != set(request.args.keys())):
                 abort(400)
@@ -174,9 +200,12 @@ def construct_blueprint(mysql):
 
             # content negotiation flag
             representation = util.get_representation(request)
+
+            # generate response
             try:
                 with util.execute_query(mysql, query) as rows:
                     response = Response()
+
                     if representation == 'text/json':
                         response.set_data(format_json(rows))
                         response.headers['content-type'] = 'text/json'
@@ -188,7 +217,6 @@ def construct_blueprint(mysql):
             except ValueError:
                 # bad request if query fails
                 abort(400)
-            abort(501)
         elif request.method == 'POST':
             # is json
             print(request.is_json)
