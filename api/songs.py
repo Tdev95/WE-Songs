@@ -185,7 +185,37 @@ def construct_blueprint(connector):
         '''
 
         if request.method == 'DELETE':
-            abort(501)
+            # validate input
+            if('Song' in request.headers):
+                constraints = [util.LengthConstraint(18, 18), util.TypeConstraint('str')]
+                valid_args = util.sanitize({'Song': request.headers['Song']}, constraints)
+            else:
+                abort(400)
+
+            if('Song' in valid_args):
+                id = valid_args['Song']
+            else:
+                abort(400)
+
+            query = f'DELETE FROM song WHERE id = "{id}"'
+
+            # not using util.execute_query in order to obtain rowcount
+            try:
+                cursor = connector.cursor()
+                cursor.execute(query)
+                connector.commit()
+                rowcount = cursor.rowcount
+            except Exception:
+                # bad request if query fails
+                abort(400)
+
+            # format response
+            response = Response()
+            response.status = '200'
+            response.headers['content-type'] = 'text/plain'
+            response.set_data(f'Deleted {rowcount} song(s)')
+
+            return response
         elif request.method == 'GET':
             # sanitize input
             constraints = create_constraints()
