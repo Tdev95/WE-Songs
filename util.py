@@ -57,7 +57,8 @@ class TypeConstraint(Constraint):
                 n = ord(char)
                 if not ((n >= ord('a') and n <= ord('z'))
                         or (n >= ord('A') and n <= ord('Z'))
-                        or (n >= ord('0') and n <= ord('9'))):
+                        or (n >= ord('0') and n <= ord('9'))
+                        or n == ord(' ')):
                     return False
         if(self.type == 'int'):
             for char in input:
