@@ -122,7 +122,7 @@ def format_csv(rows):
     return csv
 
 
-def construct_blueprint(mysql):
+def construct_blueprint(connector):
     '''constructs blueprint'''
     blueprint = Blueprint('artists', __name__)
 
@@ -157,7 +157,7 @@ def construct_blueprint(mysql):
 
         # generate response
         try:
-            with util.execute_query(mysql, query) as rows:
+            with util.execute_query(connector, query) as rows:
                 response = Response()
 
                 if representation == 'text/json':

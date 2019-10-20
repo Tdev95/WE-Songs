@@ -1,6 +1,6 @@
 from flask import Flask, render_template
-from flask_mysqldb import MySQL
 import config
+import mysql.connector
 
 # api endpoint blueprints
 from api import artists
@@ -9,23 +9,21 @@ from api import keys
 from api import songs
 from api import stats
 
-# create application instance and set configuration variables
+# create application instance
 
 app = Flask(__name__)
-app.config['MYSQL_HOST'] = config.mysql_host
-app.config['MYSQL_USER'] = config.mysql_user
-app.config['MYSQL_PASSWORD'] = config.mysql_password
-app.config['MYSQL_DB'] = config.mysql_db
 
-# connect app to database
-mysql = MySQL(app)
+# connect to MySQL database
+connection = mysql.connector.Connect(host=config.mysql_host, user=config.mysql_user,
+                                     password=config.mysql_password, database=config.mysql_db,
+                                     auth_plugin='mysql_native_password')
 
 # register api endpoints
-app.register_blueprint(artists.construct_blueprint(mysql))
-app.register_blueprint(genres.construct_blueprint(mysql))
-app.register_blueprint(keys.construct_blueprint(mysql))
-app.register_blueprint(songs.construct_blueprint(mysql))
-app.register_blueprint(stats.construct_blueprint(mysql))
+app.register_blueprint(artists.construct_blueprint(connection))
+app.register_blueprint(genres.construct_blueprint(connection))
+app.register_blueprint(keys.construct_blueprint(connection))
+app.register_blueprint(songs.construct_blueprint(connection))
+app.register_blueprint(stats.construct_blueprint(connection))
 
 
 @app.route('/home', methods=['GET'])

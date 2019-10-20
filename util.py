@@ -2,11 +2,11 @@ from contextlib import contextmanager
 
 
 @contextmanager
-def execute_query(db, query):
+def execute_query(connection, query):
     '''query context manager'''
-    cursor = db.connection.cursor()
+    cursor = connection.cursor(buffered=True)
     cursor.execute(query)
-    db.connection.commit()
+    connection.commit()
     yield cursor.fetchall()
     cursor.close()
 
