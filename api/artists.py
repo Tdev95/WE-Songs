@@ -87,6 +87,7 @@ def format_json(rows):
     for row in rows:
         d = collections.OrderedDict()
         d['id'] = row[0]
+        d['songs'] = f'/songs?artist={row[0]}'
         d['familiarity'] = row[1]
         d['hotness'] = row[2]
         d['lattitude'] = row[3]
@@ -105,11 +106,12 @@ def format_csv(rows):
     # format to csv
     delim = ' '
     newline = '\n'
-    csv = f'id{delim}familiarity{delim}hotness{delim}lattitude{delim}location' + \
+    csv = f'id{delim}songs{delim}familiarity{delim}hotness{delim}lattitude{delim}location' + \
         '{delim}longitude{delim}name{delim}similar' + \
         '{delim}terms{delim}terms_freq{newline}'
     for row in rows:
         csv += row[0] + delim  # id
+        csv += f'/songs?artist={row[0]}' + delim  # songs of artist
         csv += str(row[1]) + delim  # familiarity
         csv += str(row[2]) + delim  # hotness
         csv += str(row[3]) + delim  # lattitude
