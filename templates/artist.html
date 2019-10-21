@@ -3,7 +3,9 @@
 
 <head>
 	<title>Million Songs Dataset</title>
+	<script type="text/javascript" src="/static/scripts/artists.js"></script>
 </head>
+
 <body>
 	<h1>ARTISTS</h1>
 	<form>
@@ -16,53 +18,10 @@
 				<option value="familiarity">Familiarity</option>
 			</select>
 			<br>
-		Page: <input type="number" name="page" min="1" value="1"><br>
+		Page: <input type="number" name="page" min="1"><br>
 		<input type="button" value="Submit" 
-			onclick="test(artistName.value, genre.value, sort.value, page.value)">
+			onclick="showTable(artistName.value, genre.value, sort.value, page.value);">
 	</form>
 	<p id="resultTable">[]</p>
-	<script type="text/javascript">
-		function test (name, genre, sort, page) {
-			var xhr = new XMLHttpRequest ();
-			query = '';
-			if (name)
-				query += 'name='+name;
-			if (genre) {
-				if (query)
-					query += '&';
-				query += 'genre='+genre;
-			}
-			if (sort) {
-				if (query)
-					query += '&';
-				query += 'sort='+sort;
-			}
-			if (page) {
-				if (query)
-					query += '&';
-				query += 'page='+page;
-			}
-			xhr.open ('GET', '/artists?'+query);
-			xhr.responseType = 'json';
-			xhr.onload = function() {
-				if (xhr.status != 200) {
-					alert('Error: ' + xhr.status);
-				} else { // show the result
-					myObj = xhr.response;
-					txt = "<table border='1'>";
-					for (x in myObj) {
-						txt += "<tr>";
-						txt += "<td>" + myObj[x].name + "</td>";
-						txt += "<td>" + myObj[x].terms + "</td>";
-						txt += "<td>" + myObj[x].hotness + "</td>";
-						txt += "<tr>";
-					}
-					txt += "</table>"
-					document.getElementById("resultTable").innerHTML = txt;
-				}
-			};
-			xhr.send ();
-		};
-	</script>
 </body>
 </html>
