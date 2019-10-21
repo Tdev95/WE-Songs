@@ -8,7 +8,6 @@ verify_ssl = true
 [packages]
 flask = "*"
 flask-mysqldb = "*"
-mysql-connector = "*"
 mysql-connector-python = "*"
 
 [requires]
