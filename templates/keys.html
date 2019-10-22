@@ -1,0 +1,17 @@
+{% extends 'home.html' %}
+
+{% block scripts %}
+<script type="text/javascript" src="{{url_for('static', filename='js/histogram.js') }}"></script>
+<script type="text/javascript" src="{{url_for('static', filename='js/keys.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<h1>KEYS</h1>
+<form>
+	Genre: <input type="text" name="genre"><br>
+	Threshold: <input type="number" name="threshold"><br>
+	<input type="button" value="Submit" 
+		onclick="keysHistogram(genre.value, threshold.value);">
+</form>
+<p id="resultHistogram">[]</p>
+{% endblock %}
