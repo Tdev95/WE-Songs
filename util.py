@@ -89,14 +89,6 @@ class LengthConstraint(Constraint):
         return False
 
 
-class NameConstraint(Constraint):
-    def __init__(self, valid_names):
-        self.valid_names = valid_names
-
-    def check(self, name, input):
-        return name in self.valid_names
-
-
 class ValueConstraint(Constraint):
     def __init__(self, valid_values):
         self.valid_values = valid_values

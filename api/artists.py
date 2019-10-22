@@ -5,13 +5,12 @@ import util
 
 
 def create_constraints():
-    nc = util.NameConstraint(['id', 'name', 'genre', 'sort', 'page'])
     constraints = {
-        'id': [nc, util.TypeConstraint('str'), util.LengthConstraint(18, 18)],
-        'name': [nc, util.TypeConstraint('str')],
-        'genre': [nc, util.TypeConstraint('str')],
-        'sort': [nc, util.ValueConstraint(['hotness', 'familiarity'])],
-        'page': [nc, util.TypeConstraint('int')]
+        'id': [util.TypeConstraint('str'), util.LengthConstraint(18, 18)],
+        'name': [util.TypeConstraint('str')],
+        'genre': [util.TypeConstraint('str')],
+        'sort': [util.ValueConstraint(['hotness', 'familiarity'])],
+        'page': [util.TypeConstraint('int')]
     }
     return constraints
 

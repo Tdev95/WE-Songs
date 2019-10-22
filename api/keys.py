@@ -13,10 +13,9 @@ def create_constraints():
             return False
         return value >= 0 and value <= 1
 
-    nc = util.NameConstraint(['genre', 'threshold'])
     constraints = {
-        'genre': [nc, util.TypeConstraint('str')],
-        'threshold': [nc, util.TypeConstraint('float'), util.CustomConstraint(threshold_check)]
+        'genre': [util.TypeConstraint('str')],
+        'threshold': [util.TypeConstraint('float'), util.CustomConstraint(threshold_check)]
     }
     return constraints
 

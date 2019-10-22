@@ -5,15 +5,14 @@ import util
 
 
 def create_get_constraints():
-    nc = util.NameConstraint(['id', 'genre', 'release', 'artist', 'year', 'sort', 'page'])
     constraints = {
-        'id': [nc, util.TypeConstraint('str'), util.LengthConstraint(18, 18)],
-        'genre': [nc, util.TypeConstraint('str')],
-        'release': [nc, util.TypeConstraint('int')],
-        'artist': [nc, util.TypeConstraint('str'), util.LengthConstraint(18, 18)],
-        'year': [nc, util.TypeConstraint('int')],
-        'sort': [nc, util.ValueConstraint(['hotness'])],
-        'page': [nc, util.TypeConstraint('int')]
+        'id': [util.TypeConstraint('str'), util.LengthConstraint(18, 18)],
+        'genre': [util.TypeConstraint('str')],
+        'release': [util.TypeConstraint('int')],
+        'artist': [util.TypeConstraint('str'), util.LengthConstraint(18, 18)],
+        'year': [util.TypeConstraint('int')],
+        'sort': [util.ValueConstraint(['hotness'])],
+        'page': [util.TypeConstraint('int')]
     }
     return constraints
 
