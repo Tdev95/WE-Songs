@@ -43,12 +43,12 @@ def create_query(valid_args):
             where = True
         else:
             query += ' AND '
-        query += 'terms LIKE "%' + valid_args['genre'] + '%"'
+        query += 'genre LIKE "%' + valid_args['genre'] + '%"'
 
     # sorting
     if 'sort' in valid_args:
         if valid_args['sort'] == 'hotness':
-            query += ' ORDER BY hotttnesss'  # TODO: database spelling
+            query += ' ORDER BY hotness'  # TODO: database spelling
         if valid_args['sort'] == 'familiarity':
             query += ' ORDER BY familiarity'
 
@@ -94,8 +94,8 @@ def format_json(rows):
         d['longitude'] = row[5]
         d['name'] = row[6]
         d['similar'] = row[7]
-        d['terms'] = row[8]
-        d['terms_freq'] = row[9]
+        d['genre'] = row[8]
+        d['genre_freq'] = row[9]
         list.append(d)
 
     return json.dumps(list)
@@ -107,7 +107,7 @@ def format_csv(rows):
     newline = '\n'
     csv = f'id{delim}songs{delim}familiarity{delim}hotness{delim}lattitude{delim}location' + \
         '{delim}longitude{delim}name{delim}similar' + \
-        '{delim}terms{delim}terms_freq{newline}'
+        '{delim}genre{delim}genre_freq{newline}'
     for row in rows:
         csv += row[0] + delim  # id
         csv += f'/songs?artist={row[0]}' + delim  # songs of artist
@@ -118,8 +118,8 @@ def format_csv(rows):
         csv += str(row[5]) + delim  # longitude
         csv += f'"{row[6]}"{delim}'  # name
         csv += str(row[7]) + delim  # similar
-        csv += f'"{row[8]}"{delim}'  # terms
-        csv += str(row[9]) + newline  # terms_freq
+        csv += f'"{row[8]}"{delim}'  # genre
+        csv += str(row[9]) + newline  # genre_freq
     return csv
 
 

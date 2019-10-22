@@ -51,6 +51,7 @@ class TypeConstraint(Constraint):
 
     def check(self, name, input):
         '''returns True iff input is a valid instance of the defined type'''
+        input = str(input)
         # str
         if(self.type == 'str'):
             for char in input:
@@ -61,11 +62,17 @@ class TypeConstraint(Constraint):
                         or n == ord(' ')):
                     return False
         if(self.type == 'int'):
+            # negative sign
+            if(input[0] == '-'):
+                input = input[1:]
             for char in input:
                 n = ord(char)
                 if not (n >= ord('0') and n <= ord('9')):
                     return False
         if(self.type == 'float'):
+            # negative sign
+            if(input[0] == '-'):
+                input = input[1:]
             dot = False
             for char in input:
                 n = ord(char)

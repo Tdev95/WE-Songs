@@ -59,13 +59,13 @@ def create_get_query(valid_args):
             where = True
         else:
             query += ' AND '
-        query += 'artist_id IN (SELECT id AS artist_id FROM artist WHERE terms LIKE "%' + \
+        query += 'artist_id IN (SELECT id AS artist_id FROM artist WHERE genre LIKE "%' + \
             valid_args['genre'] + '%")'
 
     # popularity
     if 'sort' in valid_args:
         if valid_args['sort'] == 'hotness':
-            query += ' ORDER BY hotttnesss'  # TODO: database spelling
+            query += ' ORDER BY hotness'  # TODO: database spelling
 
     # pagination
     page = 1
@@ -232,8 +232,31 @@ def get(connector, request):
         abort(400)
 
 
-def create_post_constraints():
-    return []
+def create_song_constraints():
+    constraints = {
+        'artist_id': [util.TypeConstraint('str'), util.LengthConstraint(18, 18)],
+        'release_id': [util.TypeConstraint('int')],
+        'artist_mbtags_count': [util.TypeConstraint('int')],
+        'bars_confidence': [util.TypeConstraint('float')],
+        'bars_start': [util.TypeConstraint('float')],
+        'beats_confidence': [util.TypeConstraint('float')],
+        'beats_start': [util.TypeConstraint('float')],
+        'duration': [util.TypeConstraint('float')],
+        'end_of_fade_in': [util.TypeConstraint('float')],
+        'hotness': [util.TypeConstraint('float')],
+        'key_in': [util.TypeConstraint('int')],
+        'key_confidence': [util.TypeConstraint('float')],
+        'loudness': [util.TypeConstraint('float')],
+        'mode': [util.TypeConstraint('int')],
+        'mode_confidence': [util.TypeConstraint('float')],
+        'start_of_fade_out': [util.TypeConstraint('float')],
+        'tatums_confidence': [util.TypeConstraint('float')],
+        'tatums_start': [util.TypeConstraint('float')],
+        'tempo': [util.TypeConstraint('float')],
+        'time_signature': [util.TypeConstraint('int')],
+        'time_signature_confidence': [util.TypeConstraint('float')],
+        'year': [util.TypeConstraint('int')]}
+    return constraints
 
 
 def foo(valid_args, name, default):
@@ -288,7 +311,7 @@ def create_post_query(valid_args):
 def post(connector, request):
     try:
         args = json.loads(request.json)
-        constraints = create_post_constraints()
+        constraints = create_song_constraints()
         valid_args = util.sanitize(args, constraints)
         query = create_post_query(valid_args)
 
@@ -304,7 +327,55 @@ def post(connector, request):
         response.headers['content-type'] = 'text/plain'
         response.set_data(f'Added {rowcount} song(s)')
         return response
-        return "test"
+    except Exception:
+        # bad request if anything fails
+        abort(400)
+
+
+def create_patch_query(valid_args):
+    # look for id of song to patch
+    id = ''
+    if('song_id' in valid_args):
+        id = valid_args['song_id']
+    else:
+        abort(400)
+
+    column_names = ['artist_id', 'release_id', 'artist_mbtags_count',
+                    'bars_confidence', 'bars_start', 'beats_confidence', 'beats_start', 'duration',
+                    'end_of_fade_in', 'hotness', 'key_in', 'key_confidence', 'loudness', 'mode',
+                    'mode_confidence', 'start_of_fade_out', 'tatums_confidence', 'tatums_start',
+                    'tempo', 'time_signature', 'time_signature_confidence', 'year']
+
+    # create query
+    query = f'UPDATE song SET id = "{id}" '
+    for arg in valid_args:
+        if(arg in column_names):
+            if arg == 'artist_id':
+                query += f', {arg} = "{valid_args[arg]}" '
+            else:
+                query += f', {arg} = {valid_args[arg]} '
+    query += f'WHERE id = "{id}"'
+
+    # return query
+    return query
+
+
+def patch(connector, request):
+    try:
+        args = json.loads(request.json)
+        constraints = create_song_constraints()
+        valid_args = util.sanitize(args, constraints)
+        query = create_patch_query(valid_args)
+
+        # execute query
+        cursor = connector.cursor()
+        cursor.execute(query)
+        connector.commit()
+
+        # format response
+        response = Response()
+        response.status = '204'
+        return response
     except Exception:
         # bad request if anything fails
         abort(400)
@@ -314,7 +385,7 @@ def construct_blueprint(connector):
     '''constructs blueprint'''
     blueprint = Blueprint('songs', __name__)
 
-    @blueprint.route('/songs', methods=['DELETE', 'GET', 'POST', 'PUT'])
+    @blueprint.route('/songs', methods=['DELETE', 'GET', 'POST', 'PATCH'])
     def songs():
         '''
         returns a set of songs, providing detailed information about each song
@@ -334,6 +405,6 @@ def construct_blueprint(connector):
             return get(connector, request)
         elif request.method == 'POST':
             return post(connector, request)
-        elif request.method == 'PUT':
-            abort(501)
+        elif request.method == 'PATCH':
+            return patch(connector, request)
     return blueprint

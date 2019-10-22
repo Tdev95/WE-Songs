@@ -30,9 +30,11 @@ app.register_blueprint(stats.construct_blueprint(connection))
 def home():
     return render_template('home.html')
 
+
 @app.route('/artists/home', methods=['GET'])
 def artistsHome():
     return render_template('artist.html')
+
 
 # run application if standalone mode
 if __name__ == '__main__':
