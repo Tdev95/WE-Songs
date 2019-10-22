@@ -31,6 +31,15 @@ function showHistogram (endpoint, query, field) {
 						}
 						txt +=			"]" +
 									"}]" +
+								"}," +
+								"options: {" +
+									"title: {" +
+										"display: true," +
+										"text: '" + '/'+endpoint+query.replace("&"," ") + "'," +
+									"}," +
+									"legend: {" +
+										"display: false," +
+									"}" +
 								"}" +
 							"}";
 						txt += '">'
