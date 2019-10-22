@@ -213,7 +213,6 @@
   <li><a href="#getSongs"><code><span class="http-method">get</span> /songs</code></a></li>
   <li><a href="#patchSong"><code><span class="http-method">patch</span> /songs/{songId}</code></a></li>
   <li><a href="#postSong"><code><span class="http-method">post</span> /songs</code></a></li>
-  <li><a href="#putSongById"><code><span class="http-method">put</span> /songs/{songId}</code></a></li>
   </ul>
   <h4><a href="#Statistic">Statistic</a></h4>
   <ul>
@@ -232,7 +231,7 @@
     <div class="field-items">
       <div class="param">artistId (required)</div>
       
-            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Unique dataset ID of an artist </div>    </div>  <!-- field-items -->
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; The ID of the artist </div>    </div>  <!-- field-items -->
 
 
 
@@ -297,11 +296,13 @@
     <div class="field-items">
       <div class="param">name (optional)</div>
       
-            <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; The name of the artist </div>      <div class="param">genre (optional)</div>
+            <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; The name of the artist who made the song </div>      <div class="param">genre (optional)</div>
       
             <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; The genre of the song </div>      <div class="param">sort (optional)</div>
       
-            <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Sort the artists by their popularity (hotttnesss value) </div>    </div>  <!-- field-items -->
+            <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Sort by parameter </div>      <div class="param">page (optional)</div>
+      
+            <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; The page number (subsetting by 50) </div>    </div>  <!-- field-items -->
 
 
     <h3 class="field-label">Return type</h3>
@@ -351,7 +352,7 @@
     Successful operation
         
     <h4 class="field-label">400</h4>
-    Invalid value
+    Bad request
         <a href="#"></a>
   </div> <!-- method -->
   <hr/>
@@ -367,6 +368,11 @@
 
 
 
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">threshold (optional)</div>
+      
+            <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Thershold format: float</div>    </div>  <!-- field-items -->
 
 
     <h3 class="field-label">Return type</h3>
@@ -409,7 +415,7 @@
     <div class="field-items">
       <div class="param">songId (required)</div>
       
-            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Song with id songId to delete </div>    </div>  <!-- field-items -->
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Unique dataset ID of a song </div>    </div>  <!-- field-items -->
 
 
 
@@ -459,7 +465,7 @@
     <h3 class="field-label">Example data</h3>
     <div class="example-data-content-type">Content-Type: application/json</div>
     <pre class="example"><code>{
-  "mode_confidence" : 1.0246457,
+  "mode_confidence" : 6.846853,
   "artist" : {
     "similar" : 2.302136,
     "familiarity" : 0.08008282,
@@ -472,28 +478,32 @@
     "terms_freq" : 7.0614014,
     "longitude" : 5.962134
   },
-  "artist_mbta_count" : 6.0274563,
-  "beats_confidence" : 5.637377,
-  "year" : 9,
-  "bars_start" : 5.962134,
-  "loudness" : 7.386282,
-  "tempo" : 1.1730742,
-  "end_of_fade_in" : 9.301444,
-  "hotness" : 3.6160767,
-  "title" : 9,
-  "key_confidence" : 4.145608,
-  "bars_confidence" : 1.4658129,
-  "beats_start" : 2.302136,
-  "duration" : 7.0614014,
+  "year" : 8,
+  "release" : {
+    "name" : 6,
+    "id" : 0
+  },
+  "bars_start" : 2.302136,
+  "loudness" : 1.0246457,
+  "tempo" : 5.025005,
+  "title" : 6,
+  "key_confidence" : 1.2315135,
+  "bars_confidence" : 5.637377,
+  "duration" : 3.6160767,
   "mode" : 1,
-  "start_of_fade_out" : 1.4894159,
+  "start_of_fade_out" : 7.4577446,
   "id" : "id",
-  "time_signature_confidence" : 5.025005,
-  "artist_mbta" : 0.8008282,
-  "tatums_confidence" : 6.846853,
-  "key" : 2.027123,
-  "tatums_start" : 7.4577446,
-  "time_signature" : 4.9652185
+  "time_signature_confidence" : 9.36931,
+  "key" : 7.386282,
+  "tatums_start" : 4.9652185,
+  "time_signature" : 9.965781,
+  "artist_mbta_count" : 5.962134,
+  "beats_confidence" : 7.0614014,
+  "end_of_fade_in" : 2.027123,
+  "hotness" : 4.145608,
+  "beats_start" : 9.301444,
+  "artist_mbta" : 1.4658129,
+  "tatums_confidence" : 1.1730742
 }</code></pre>
 
     <h3 class="field-label">Produces</h3>
@@ -529,17 +539,17 @@
 
     <h3 class="field-label">Query parameters</h3>
     <div class="field-items">
-      <div class="param">artistName (optional)</div>
+      <div class="param">name (optional)</div>
       
             <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; The name of the artist who made the song </div>      <div class="param">year (optional)</div>
       
             <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; The year the song was released </div>      <div class="param">genre (optional)</div>
       
-            <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; The genre of the song/artist </div>      <div class="param">sort (optional)</div>
+            <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; The genre of the song </div>      <div class="param">sort (optional)</div>
       
-            <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Sort the song by their popularity (hotttnesss value) </div>      <div class="param">subset (optional)</div>
+            <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Sort by parameter </div>      <div class="param">page (optional)</div>
       
-            <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; The subset (e.g. top 50) </div>    </div>  <!-- field-items -->
+            <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; The page number (subsetting by 50) </div>    </div>  <!-- field-items -->
 
 
     <h3 class="field-label">Return type</h3>
@@ -553,7 +563,7 @@
     <h3 class="field-label">Example data</h3>
     <div class="example-data-content-type">Content-Type: application/json</div>
     <pre class="example"><code>[ {
-  "mode_confidence" : 1.0246457,
+  "mode_confidence" : 6.846853,
   "artist" : {
     "similar" : 2.302136,
     "familiarity" : 0.08008282,
@@ -566,30 +576,34 @@
     "terms_freq" : 7.0614014,
     "longitude" : 5.962134
   },
-  "artist_mbta_count" : 6.0274563,
-  "beats_confidence" : 5.637377,
-  "year" : 9,
-  "bars_start" : 5.962134,
-  "loudness" : 7.386282,
-  "tempo" : 1.1730742,
-  "end_of_fade_in" : 9.301444,
-  "hotness" : 3.6160767,
-  "title" : 9,
-  "key_confidence" : 4.145608,
-  "bars_confidence" : 1.4658129,
-  "beats_start" : 2.302136,
-  "duration" : 7.0614014,
+  "year" : 8,
+  "release" : {
+    "name" : 6,
+    "id" : 0
+  },
+  "bars_start" : 2.302136,
+  "loudness" : 1.0246457,
+  "tempo" : 5.025005,
+  "title" : 6,
+  "key_confidence" : 1.2315135,
+  "bars_confidence" : 5.637377,
+  "duration" : 3.6160767,
   "mode" : 1,
-  "start_of_fade_out" : 1.4894159,
+  "start_of_fade_out" : 7.4577446,
   "id" : "id",
-  "time_signature_confidence" : 5.025005,
-  "artist_mbta" : 0.8008282,
-  "tatums_confidence" : 6.846853,
-  "key" : 2.027123,
-  "tatums_start" : 7.4577446,
-  "time_signature" : 4.9652185
+  "time_signature_confidence" : 9.36931,
+  "key" : 7.386282,
+  "tatums_start" : 4.9652185,
+  "time_signature" : 9.965781,
+  "artist_mbta_count" : 5.962134,
+  "beats_confidence" : 7.0614014,
+  "end_of_fade_in" : 2.027123,
+  "hotness" : 4.145608,
+  "beats_start" : 9.301444,
+  "artist_mbta" : 1.4658129,
+  "tatums_confidence" : 1.1730742
 }, {
-  "mode_confidence" : 1.0246457,
+  "mode_confidence" : 6.846853,
   "artist" : {
     "similar" : 2.302136,
     "familiarity" : 0.08008282,
@@ -602,28 +616,32 @@
     "terms_freq" : 7.0614014,
     "longitude" : 5.962134
   },
-  "artist_mbta_count" : 6.0274563,
-  "beats_confidence" : 5.637377,
-  "year" : 9,
-  "bars_start" : 5.962134,
-  "loudness" : 7.386282,
-  "tempo" : 1.1730742,
-  "end_of_fade_in" : 9.301444,
-  "hotness" : 3.6160767,
-  "title" : 9,
-  "key_confidence" : 4.145608,
-  "bars_confidence" : 1.4658129,
-  "beats_start" : 2.302136,
-  "duration" : 7.0614014,
+  "year" : 8,
+  "release" : {
+    "name" : 6,
+    "id" : 0
+  },
+  "bars_start" : 2.302136,
+  "loudness" : 1.0246457,
+  "tempo" : 5.025005,
+  "title" : 6,
+  "key_confidence" : 1.2315135,
+  "bars_confidence" : 5.637377,
+  "duration" : 3.6160767,
   "mode" : 1,
-  "start_of_fade_out" : 1.4894159,
+  "start_of_fade_out" : 7.4577446,
   "id" : "id",
-  "time_signature_confidence" : 5.025005,
-  "artist_mbta" : 0.8008282,
-  "tatums_confidence" : 6.846853,
-  "key" : 2.027123,
-  "tatums_start" : 7.4577446,
-  "time_signature" : 4.9652185
+  "time_signature_confidence" : 9.36931,
+  "key" : 7.386282,
+  "tatums_start" : 4.9652185,
+  "time_signature" : 9.965781,
+  "artist_mbta_count" : 5.962134,
+  "beats_confidence" : 7.0614014,
+  "end_of_fade_in" : 2.027123,
+  "hotness" : 4.145608,
+  "beats_start" : 9.301444,
+  "artist_mbta" : 1.4658129,
+  "tatums_confidence" : 1.1730742
 } ]</code></pre>
 
     <h3 class="field-label">Produces</h3>
@@ -654,7 +672,7 @@
     <div class="field-items">
       <div class="param">songId (required)</div>
       
-            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; ID of song that needs to be updated </div>    </div>  <!-- field-items -->
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Unique dataset ID of a song </div>    </div>  <!-- field-items -->
 
     <h3 class="field-label">Consumes</h3>
     This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
@@ -684,7 +702,7 @@
     <h3 class="field-label">Example data</h3>
     <div class="example-data-content-type">Content-Type: application/json</div>
     <pre class="example"><code>{
-  "mode_confidence" : 1.0246457,
+  "mode_confidence" : 6.846853,
   "artist" : {
     "similar" : 2.302136,
     "familiarity" : 0.08008282,
@@ -697,28 +715,32 @@
     "terms_freq" : 7.0614014,
     "longitude" : 5.962134
   },
-  "artist_mbta_count" : 6.0274563,
-  "beats_confidence" : 5.637377,
-  "year" : 9,
-  "bars_start" : 5.962134,
-  "loudness" : 7.386282,
-  "tempo" : 1.1730742,
-  "end_of_fade_in" : 9.301444,
-  "hotness" : 3.6160767,
-  "title" : 9,
-  "key_confidence" : 4.145608,
-  "bars_confidence" : 1.4658129,
-  "beats_start" : 2.302136,
-  "duration" : 7.0614014,
+  "year" : 8,
+  "release" : {
+    "name" : 6,
+    "id" : 0
+  },
+  "bars_start" : 2.302136,
+  "loudness" : 1.0246457,
+  "tempo" : 5.025005,
+  "title" : 6,
+  "key_confidence" : 1.2315135,
+  "bars_confidence" : 5.637377,
+  "duration" : 3.6160767,
   "mode" : 1,
-  "start_of_fade_out" : 1.4894159,
+  "start_of_fade_out" : 7.4577446,
   "id" : "id",
-  "time_signature_confidence" : 5.025005,
-  "artist_mbta" : 0.8008282,
-  "tatums_confidence" : 6.846853,
-  "key" : 2.027123,
-  "tatums_start" : 7.4577446,
-  "time_signature" : 4.9652185
+  "time_signature_confidence" : 9.36931,
+  "key" : 7.386282,
+  "tatums_start" : 4.9652185,
+  "time_signature" : 9.965781,
+  "artist_mbta_count" : 5.962134,
+  "beats_confidence" : 7.0614014,
+  "end_of_fade_in" : 2.027123,
+  "hotness" : 4.145608,
+  "beats_start" : 9.301444,
+  "artist_mbta" : 1.4658129,
+  "tatums_confidence" : 1.1730742
 }</code></pre>
 
     <h3 class="field-label">Produces</h3>
@@ -777,92 +799,6 @@
         <a href="#"></a>
   </div> <!-- method -->
   <hr/>
-  <div class="method"><a name="putSongById"></a>
-    <div class="method-path">
-    <a class="up" href="#__Methods">Up</a>
-    <pre class="put"><code class="huge"><span class="http-method">put</span> /songs/{songId}</code></pre></div>
-    <div class="method-summary">Update (whole) song by ID (<span class="nickname">putSongById</span>)</div>
-    <div class="method-notes">Updates all fields of a song specified by its ID</div>
-
-    <h3 class="field-label">Path parameters</h3>
-    <div class="field-items">
-      <div class="param">songId (required)</div>
-      
-            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; ID of song that needs to be updated </div>    </div>  <!-- field-items -->
-
-
-
-
-
-
-    <h3 class="field-label">Return type</h3>
-    <div class="return-type">
-      <a href="#Song">Song</a>
-      
-    </div>
-
-    <!--Todo: process Response Object and its headers, schema, examples -->
-
-    <h3 class="field-label">Example data</h3>
-    <div class="example-data-content-type">Content-Type: application/json</div>
-    <pre class="example"><code>{
-  "mode_confidence" : 1.0246457,
-  "artist" : {
-    "similar" : 2.302136,
-    "familiarity" : 0.08008282,
-    "terms" : "terms",
-    "latitude" : 1.4658129,
-    "name" : "name",
-    "location" : 5,
-    "id" : "id",
-    "hotness" : 0.6027456,
-    "terms_freq" : 7.0614014,
-    "longitude" : 5.962134
-  },
-  "artist_mbta_count" : 6.0274563,
-  "beats_confidence" : 5.637377,
-  "year" : 9,
-  "bars_start" : 5.962134,
-  "loudness" : 7.386282,
-  "tempo" : 1.1730742,
-  "end_of_fade_in" : 9.301444,
-  "hotness" : 3.6160767,
-  "title" : 9,
-  "key_confidence" : 4.145608,
-  "bars_confidence" : 1.4658129,
-  "beats_start" : 2.302136,
-  "duration" : 7.0614014,
-  "mode" : 1,
-  "start_of_fade_out" : 1.4894159,
-  "id" : "id",
-  "time_signature_confidence" : 5.025005,
-  "artist_mbta" : 0.8008282,
-  "tatums_confidence" : 6.846853,
-  "key" : 2.027123,
-  "tatums_start" : 7.4577446,
-  "time_signature" : 4.9652185
-}</code></pre>
-
-    <h3 class="field-label">Produces</h3>
-    This API call produces the following media types according to the <span class="header">Accept</span> request header;
-    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
-    <ul>
-      <li><code>application/json</code></li>
-      <li><code>text/csv</code></li>
-    </ul>
-
-    <h3 class="field-label">Responses</h3>
-    <h4 class="field-label">200</h4>
-    Successful operation
-        <a href="#Song">Song</a>
-    <h4 class="field-label">400</h4>
-    Invalid songId
-        <a href="#"></a>
-    <h4 class="field-label">404</h4>
-    This song does not exist
-        <a href="#"></a>
-  </div> <!-- method -->
-  <hr/>
   <h1><a name="Statistic">Statistic</a></h1>
   <div class="method"><a name="findStatisticsByYear"></a>
     <div class="method-path">
@@ -913,7 +849,7 @@
     successful operation
         <a href="#Statistic">Statistic</a>
     <h4 class="field-label">400</h4>
-    Invalid value(s)
+    Bad request
         <a href="#"></a>
   </div> <!-- method -->
   <hr/>
@@ -925,6 +861,7 @@
   <ol>
     <li><a href="#Artist"><code>Artist</code></a></li>
     <li><a href="#Histogram"><code>Histogram</code></a></li>
+    <li><a href="#Release"><code>Release</code></a></li>
     <li><a href="#Song"><code>Song</code></a></li>
     <li><a href="#Statistic"><code>Statistic</code></a></li>
   </ol>
@@ -955,11 +892,20 @@
     </div>  <!-- field-items -->
   </div>
   <div class="model">
+    <h3><a name="Release"><code>Release</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">id (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  format: int32</div>
+<div class="param">name (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  format: int32</div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
     <h3><a name="Song"><code>Song</code></a> <a class="up" href="#__Models">Up</a></h3>
     
     <div class="field-items">
       <div class="param">id </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
 <div class="param">artist (optional)</div><div class="param-desc"><span class="param-type"><a href="#Artist">Artist</a></span>  </div>
+<div class="param">release (optional)</div><div class="param-desc"><span class="param-type"><a href="#Release">Release</a></span>  </div>
 <div class="param">artist_mbta (optional)</div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
 <div class="param">artist_mbta_count (optional)</div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
 <div class="param">bars_confidence (optional)</div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
