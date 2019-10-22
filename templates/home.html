@@ -3,15 +3,21 @@
 
 <head>
 	<title>Million Songs Dataset</title>
+	{% block scripts %}
+	{% endblock %}
 </head>
 
 <body>
 	<nav>
 		<ul>
 			<li><a href="/artists/home">Artists</a></li>
-			<li>Songs</li>
+			<li><a href="/songs/home">Songs</a></li>
+			<li><a href="/keys/home">Keys</a></li>
+			<li><a href="/genres/home">Genres</a></li>
 		</ul>
 	</nav>
-	<h1>Hello!</h1>
+	{% block content %}
+	<h1>Welcome to the Million Songs Dataset home page</h1>
+	{% endblock %}
 </body>
 </html>

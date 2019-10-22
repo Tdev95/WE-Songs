@@ -34,6 +34,18 @@ def home():
 def artistsHome():
     return render_template('artist.html')
 
+@app.route('/songs/home', methods=['GET'])
+def songsHome():
+    return render_template('songs.html')
+
+@app.route('/keys/home', methods=['GET'])
+def keysHome():
+    return render_template('keys.html')
+
+@app.route('/genres/home', methods=['GET'])
+def genresHome():
+    return render_template('genres.html')
+
 # run application if standalone mode
 if __name__ == '__main__':
     app.run(config.address, port=config.port, debug=config.debug)
