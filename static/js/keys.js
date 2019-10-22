@@ -1,19 +1,19 @@
-function keysHistogram (genre, threshold) {
+function keysHistogram (genre, hotnessThreshold) {
 	showHistogram (
 		'keys',
-		createQuery (genre, threshold),
+		createQuery (genre, hotnessThreshold),
 		'key'
 	);
 }
 
-function createQuery (genre, threshold) {
+function createQuery (genre, hotnessThreshold) {
 	query = '';
 	if (genre)
 		query += 'genre='+genre;
-	if (threshold) {
+	if (hotnessThreshold) {
 		if (query)
 			query += '&';
-		query += 'threshold='+threshold;
+		query += 'hotnessThreshold='+hotnessThreshold;
 	}
 	if (query)
 		query = '?' + query;

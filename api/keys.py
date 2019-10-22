@@ -15,7 +15,7 @@ def create_constraints():
 
     constraints = {
         'genre': [util.TypeConstraint('str')],
-        'threshold': [util.TypeConstraint('float'), util.CustomConstraint(threshold_check)]
+        'hotnessThreshold': [util.TypeConstraint('float'), util.CustomConstraint(threshold_check)]
     }
     return constraints
 
@@ -31,12 +31,12 @@ def create_query(valid_args):
     else:
         query += ' FROM song'
 
-    if 'threshold' in valid_args:
+    if 'hotnessThreshold' in valid_args:
         if where is False:
             query += ' WHERE'
         else:
             query += ' AND'
-        query += f' song.hotttnesss >= {valid_args["threshold"]}'
+        query += f' song.hotness >= {valid_args["hotnessThreshold"]}'
     query += ' GROUP BY key_in ORDER BY key_in'
     return query
 

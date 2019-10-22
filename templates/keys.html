@@ -9,9 +9,9 @@
 <h1>KEYS</h1>
 <form>
 	Genre: <input type="text" name="genre"><br>
-	Threshold: <input type="number" name="threshold"><br>
+	Hotness Threshold: <input type="number" name="hotnessThreshold"><br>
 	<input type="button" value="Submit" 
-		onclick="keysHistogram(genre.value, threshold.value);">
+		onclick="keysHistogram(genre.value, hotnessThreshold.value);">
 </form>
 <p id="resultHistogram">[]</p>
 {% endblock %}

@@ -204,7 +204,8 @@
   </ul>
   <h4><a href="#Histogram">Histogram</a></h4>
   <ul>
-  <li><a href="#getHistogramByGenre"><code><span class="http-method">get</span> /histograms/genre</code></a></li>
+  <li><a href="#getGenres"><code><span class="http-method">get</span> /genres</code></a></li>
+  <li><a href="#getKeys"><code><span class="http-method">get</span> /keys</code></a></li>
   </ul>
   <h4><a href="#Song">Song</a></h4>
   <ul>
@@ -251,13 +252,13 @@
     <pre class="example"><code>{
   "similar" : 2.302136,
   "familiarity" : 0.08008282,
-  "terms" : "terms",
   "latitude" : 1.4658129,
   "name" : "name",
+  "genre" : "genre",
   "location" : 5,
   "id" : "id",
   "hotness" : 0.6027456,
-  "terms_freq" : 7.0614014,
+  "genre_freq" : 7.0614014,
   "longitude" : 5.962134
 }</code></pre>
 
@@ -318,24 +319,24 @@
     <pre class="example"><code>[ {
   "similar" : 2.302136,
   "familiarity" : 0.08008282,
-  "terms" : "terms",
   "latitude" : 1.4658129,
   "name" : "name",
+  "genre" : "genre",
   "location" : 5,
   "id" : "id",
   "hotness" : 0.6027456,
-  "terms_freq" : 7.0614014,
+  "genre_freq" : 7.0614014,
   "longitude" : 5.962134
 }, {
   "similar" : 2.302136,
   "familiarity" : 0.08008282,
-  "terms" : "terms",
   "latitude" : 1.4658129,
   "name" : "name",
+  "genre" : "genre",
   "location" : 5,
   "id" : "id",
   "hotness" : 0.6027456,
-  "terms_freq" : 7.0614014,
+  "genre_freq" : 7.0614014,
   "longitude" : 5.962134
 } ]</code></pre>
 
@@ -357,12 +358,12 @@
   </div> <!-- method -->
   <hr/>
   <h1><a name="Histogram">Histogram</a></h1>
-  <div class="method"><a name="getHistogramByGenre"></a>
+  <div class="method"><a name="getGenres"></a>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="get"><code class="huge"><span class="http-method">get</span> /histograms/genre</code></pre></div>
-    <div class="method-summary">A histogram of genre (<span class="nickname">getHistogramByGenre</span>)</div>
-    <div class="method-notes"></div>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /genres</code></pre></div>
+    <div class="method-summary">A histogram of genres (<span class="nickname">getGenres</span>)</div>
+    <div class="method-notes">Compute the histogram of genres (optionally filtered by year and a threshold for the genre count)</div>
 
 
 
@@ -370,9 +371,11 @@
 
     <h3 class="field-label">Query parameters</h3>
     <div class="field-items">
-      <div class="param">threshold (optional)</div>
+      <div class="param">year (optional)</div>
       
-            <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Thershold format: float</div>    </div>  <!-- field-items -->
+            <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; The year the song was released </div>      <div class="param">threshold (optional)</div>
+      
+            <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Thershold format: int32</div>    </div>  <!-- field-items -->
 
 
     <h3 class="field-label">Return type</h3>
@@ -386,21 +389,87 @@
     <h3 class="field-label">Example data</h3>
     <div class="example-data-content-type">Content-Type: application/json</div>
     <pre class="example"><code>{
-  "name" : "Histogram of genres",
-  "url" : "url"
+  "values" : [ {
+    "param" : "param",
+    "count" : 0
+  }, {
+    "param" : "param",
+    "count" : 0
+  } ]
 }</code></pre>
 
     <h3 class="field-label">Produces</h3>
     This API call produces the following media types according to the <span class="header">Accept</span> request header;
     the media type will be conveyed by the <span class="header">Content-Type</span> response header.
     <ul>
-      <li><code>*/*</code></li>
+      <li><code>application/json</code></li>
+      <li><code>text/csv</code></li>
     </ul>
 
     <h3 class="field-label">Responses</h3>
     <h4 class="field-label">200</h4>
     Successful operation
         <a href="#Histogram">Histogram</a>
+    <h4 class="field-label">400</h4>
+    Bad request
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getKeys"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /keys</code></pre></div>
+    <div class="method-summary">A histogram of keys (<span class="nickname">getKeys</span>)</div>
+    <div class="method-notes">Compute the histogram of keys (optionally filtered by genre and a threshold for the hotness value)</div>
+
+
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">year (optional)</div>
+      
+            <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; The year the song was released </div>      <div class="param">hotnessThreshold (optional)</div>
+      
+            <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Thershold for hotness format: float</div>    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#Histogram">Histogram</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "values" : [ {
+    "param" : "param",
+    "count" : 0
+  }, {
+    "param" : "param",
+    "count" : 0
+  } ]
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+      <li><code>text/csv</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Successful operation
+        <a href="#Histogram">Histogram</a>
+    <h4 class="field-label">400</h4>
+    Bad request
+        <a href="#"></a>
   </div> <!-- method -->
   <hr/>
   <h1><a name="Song">Song</a></h1>
@@ -469,13 +538,13 @@
   "artist" : {
     "similar" : 2.302136,
     "familiarity" : 0.08008282,
-    "terms" : "terms",
     "latitude" : 1.4658129,
     "name" : "name",
+    "genre" : "genre",
     "location" : 5,
     "id" : "id",
     "hotness" : 0.6027456,
-    "terms_freq" : 7.0614014,
+    "genre_freq" : 7.0614014,
     "longitude" : 5.962134
   },
   "year" : 8,
@@ -567,13 +636,13 @@
   "artist" : {
     "similar" : 2.302136,
     "familiarity" : 0.08008282,
-    "terms" : "terms",
     "latitude" : 1.4658129,
     "name" : "name",
+    "genre" : "genre",
     "location" : 5,
     "id" : "id",
     "hotness" : 0.6027456,
-    "terms_freq" : 7.0614014,
+    "genre_freq" : 7.0614014,
     "longitude" : 5.962134
   },
   "year" : 8,
@@ -607,13 +676,13 @@
   "artist" : {
     "similar" : 2.302136,
     "familiarity" : 0.08008282,
-    "terms" : "terms",
     "latitude" : 1.4658129,
     "name" : "name",
+    "genre" : "genre",
     "location" : 5,
     "id" : "id",
     "hotness" : 0.6027456,
-    "terms_freq" : 7.0614014,
+    "genre_freq" : 7.0614014,
     "longitude" : 5.962134
   },
   "year" : 8,
@@ -706,13 +775,13 @@
   "artist" : {
     "similar" : 2.302136,
     "familiarity" : 0.08008282,
-    "terms" : "terms",
     "latitude" : 1.4658129,
     "name" : "name",
+    "genre" : "genre",
     "location" : 5,
     "id" : "id",
     "hotness" : 0.6027456,
-    "terms_freq" : 7.0614014,
+    "genre_freq" : 7.0614014,
     "longitude" : 5.962134
   },
   "year" : 8,
@@ -846,7 +915,7 @@
 
     <h3 class="field-label">Responses</h3>
     <h4 class="field-label">200</h4>
-    successful operation
+    Successful operation
         <a href="#Statistic">Statistic</a>
     <h4 class="field-label">400</h4>
     Bad request
@@ -861,6 +930,7 @@
   <ol>
     <li><a href="#Artist"><code>Artist</code></a></li>
     <li><a href="#Histogram"><code>Histogram</code></a></li>
+    <li><a href="#Histogram_values"><code>Histogram_values</code></a></li>
     <li><a href="#Release"><code>Release</code></a></li>
     <li><a href="#Song"><code>Song</code></a></li>
     <li><a href="#Statistic"><code>Statistic</code></a></li>
@@ -878,17 +948,23 @@
 <div class="param">location (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  format: int32</div>
 <div class="param">name (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
 <div class="param">similar (optional)</div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
-<div class="param">terms (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
-<div class="param">terms_freq (optional)</div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
+<div class="param">genre (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">genre_freq (optional)</div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
     </div>  <!-- field-items -->
   </div>
   <div class="model">
     <h3><a name="Histogram"><code>Histogram</code></a> <a class="up" href="#__Models">Up</a></h3>
     
     <div class="field-items">
-      <div class="param">name (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
-          <div class="param-desc"><span class="param-type">example: Histogram of genres</span></div>
-<div class="param">url (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+      <div class="param">values (optional)</div><div class="param-desc"><span class="param-type"><a href="#Histogram_values">array[Histogram_values]</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="Histogram_values"><code>Histogram_values</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">param (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">count (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  format: int32</div>
     </div>  <!-- field-items -->
   </div>
   <div class="model">
