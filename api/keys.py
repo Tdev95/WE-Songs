@@ -26,7 +26,7 @@ def create_query(valid_args):
 
     if 'genre' in valid_args:
         query += ' FROM song JOIN artist ON song.artist_id = artist.id'
-        query += f' WHERE terms LIKE "%{valid_args["genre"]}%"'
+        query += f' WHERE genre LIKE "%{valid_args["genre"]}%"'
         where = True
     else:
         query += ' FROM song'

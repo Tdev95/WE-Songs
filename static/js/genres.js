@@ -1,5 +1,4 @@
 function genresHistogram (year, threshold) {
-	width = 'width='+460*5+'&';
 	showHistogram (
 		'genres',
 		createQuery (year, threshold),

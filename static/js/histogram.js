@@ -1,5 +1,4 @@
 function showHistogram (endpoint, query, field) {
-	alert('query'+query);
 	fetch ('/'+endpoint+query)
 		.then (
 			function (response) {

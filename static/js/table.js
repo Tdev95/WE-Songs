@@ -1,5 +1,4 @@
 function showTable (endpoint, query) {
-	alert('query'+query);
 	fetch ('/'+endpoint+query)
 		.then (
 			function (response) {

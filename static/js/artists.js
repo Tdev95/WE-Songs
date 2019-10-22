@@ -41,8 +41,8 @@ function createTable (data) {
 	txt += "<th>longitude</th>"
 	txt += "<th>name</th>"
 	txt += "<th>similar</th>"
-	txt += "<th>terms</th>"
-	txt += "<th>terms_freq</th>"
+	txt += "<th>genre</th>"
+	txt += "<th>genre_freq</th>"
 	txt += "</tr>"
 	for (x in data) {
 		txt += "<tr>";
@@ -55,8 +55,8 @@ function createTable (data) {
 		txt += "<td>" + data[x].longitude + "</td>";
 		txt += "<td>" + data[x].name + "</td>";
 		txt += "<td>" + data[x].similar + "</td>";
-		txt += "<td>" + data[x].terms + "</td>";
-		txt += "<td>" + data[x].terms_freq + "</td>";
+		txt += "<td>" + data[x].genre + "</td>";
+		txt += "<td>" + data[x].genre_freq + "</td>";
 		txt += "</tr>";
 	}
 	txt += "</table>"

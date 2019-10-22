@@ -14,7 +14,7 @@ def create_constraints():
 
 
 def create_query(valid_args):
-    query = 'SELECT terms, COUNT(*) FROM artist GROUP BY terms '
+    query = 'SELECT genre, COUNT(*) FROM artist GROUP BY genre '
     if 'threshold' in valid_args:
         query += f'HAVING COUNT(*) >= {valid_args["threshold"]}'
     query += ' ORDER BY COUNT(*) DESC;'

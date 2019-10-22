@@ -1,5 +1,4 @@
 function keysHistogram (genre, threshold) {
-	width = '';
 	showHistogram (
 		'keys',
 		createQuery (genre, threshold),
