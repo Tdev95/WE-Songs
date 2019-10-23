@@ -44,7 +44,7 @@ def create_queries(valid_args):
 
     if 'name' in valid_args:
         if not where_flag:
-            query += ' WHERE '
+            where += ' WHERE '
             where_flag = True
         else:
             where += ' AND '
