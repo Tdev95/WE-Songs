@@ -17,7 +17,7 @@ def create_get_constraints():
     return constraints
 
 
-def create_get_query(valid_args):
+def create_get_queries(valid_args):
     # escape ' in genre strings
     if 'genre' in valid_args:
         genre = ''
@@ -27,60 +27,68 @@ def create_get_query(valid_args):
             genre += c
         valid_args['genre'] = genre
 
-    where = False
-    query = 'SELECT * FROM song'
+    where_flag = False
+
+    select1 = 'SELECT *'
+    select2 = 'SELECT COUNT(*)'
+    from1 = 'FROM SONG'
+    where = ''
 
     if 'id' in valid_args:
-        if not where:
-            query += ' WHERE '
-            where = True
-        query += 'id = "' + valid_args['id'] + '"'
+        if not where_flag:
+            where += ' WHERE '
+            where_flag = True
+        where += 'id = "' + valid_args['id'] + '"'
 
     if 'artist' in valid_args:
-        if not where:
-            query += ' WHERE '
-            where = True
+        if not where_flag:
+            where += ' WHERE '
+            where_flag = True
         else:
-            query += ' AND '
-        query += f'artist_id = "{valid_args["artist"]}"'
+            where += ' AND '
+        where += f'artist_id = "{valid_args["artist"]}"'
 
     if 'release' in valid_args:
-        if not where:
-            query += ' WHERE '
-            where = True
+        if not where_flag:
+            where += ' WHERE '
+            where_flag = True
         else:
-            query += ' AND '
-        query += 'release_id = ' + valid_args['release']
+            where += ' AND '
+        where += 'release_id = ' + valid_args['release']
 
     if 'year' in valid_args:
-        if not where:
-            query += ' WHERE '
-            where = True
+        if not where_flag:
+            where += ' WHERE '
+            where_flag = True
         else:
-            query += ' AND '
-        query += 'year = ' + valid_args['year']
+            where += ' AND '
+        where += 'year = ' + valid_args['year']
 
     if 'genre' in valid_args:
-        if not where:
-            query += ' WHERE '
-            where = True
+        if not where_flag:
+            where += ' WHERE '
+            where_flag = True
         else:
-            query += ' AND '
-        query += 'artist_id IN (SELECT id AS artist_id FROM artist WHERE genre LIKE "%' + \
+            where += ' AND '
+        where += 'artist_id IN (SELECT id AS artist_id FROM artist WHERE genre LIKE "%' + \
             valid_args['genre'] + '%")'
 
+    order = ''
     # popularity
     if 'sort' in valid_args:
         if valid_args['sort'] == 'hotness':
-            query += ' ORDER BY hotness'  # TODO: database spelling
+            order += 'ORDER BY hotness'
 
     # pagination
     page = 1
+    group = ''
     if 'page' in valid_args:
         page = int(valid_args['page'])
-    query += ' LIMIT 50 offset ' + str((page-1) * 50) + ';'
+    group += 'LIMIT 50 offset ' + str((page-1) * 50)
 
-    return query
+    query1 = f'{select1} {from1} {where} {order} {group};'
+    query2 = f'{select2} {from1} {where} {order};'
+    return (query1, query2)
 
 
 def format_json(rows):
@@ -216,15 +224,42 @@ def get(connector, request):
         abort(400)
 
     # create query
-    query = create_get_query(valid_args)
+    query, countquery = create_get_queries(valid_args)
+    print(query)
 
     # content negotiation flag
     representation = util.get_representation(request)
 
+    response = Response()
+    # get # of rows
+    try:
+        with util.execute_query(connector, countquery) as count:
+            rows = count[0][0]
+            pages = rows/50 + 1
+
+            url = '/artists?'
+            for arg in valid_args:
+                if arg != 'page':
+                    url += f'{arg}={valid_args[arg]}&'
+
+            # figure out current page
+            if('page' in valid_args):
+                page = int(valid_args['page'])
+            else:
+                page = 1
+
+            # add links to previous, next page depending on page and pages
+            if page > 1:
+                response.headers['Page-Previous'] = url + f'page={page-1}'
+            if page < pages:
+                response.headers['Page-Next'] = url + f'page={page+1}'
+    except Exception:
+        # bad request if query fails
+        abort(400)
+
     # generate response
     try:
         with util.execute_query(connector, query) as rows:
-            response = Response()
 
             if representation == 'text/json':
                 response.set_data(format_json(rows))
