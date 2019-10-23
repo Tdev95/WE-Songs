@@ -7,10 +7,10 @@ import util
 def create_constraints():
     constraints = {
         'id': [util.TypeConstraint('str'), util.LengthConstraint(18, 18)],
-        'name': [util.TypeConstraint('str')],
-        'genre': [util.TypeConstraint('str')],
+        'name': [util.TypeConstraint('str'), util.LengthConstraint(1, 100)],
+        'genre': [util.TypeConstraint('str'), util.LengthConstraint(1, 100)],
         'sort': [util.ValueConstraint(['hotness', 'familiarity'])],
-        'page': [util.TypeConstraint('int')]
+        'page': [util.TypeConstraint('int'), util.LengthConstraint(1, 10)]
     }
     return constraints
 

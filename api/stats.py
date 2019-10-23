@@ -8,7 +8,7 @@ from statistics import mean, median, stdev
 def create_constraints():
     constraints = {
         'artist': [util.TypeConstraint('str'), util.LengthConstraint(18, 18)],
-        'year': [util.TypeConstraint('int')]
+        'year': [util.TypeConstraint('int'), util.LengthConstraint(1, 5)]
     }
     return constraints
 

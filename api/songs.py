@@ -192,7 +192,6 @@ def get(connector, request):
 
     # create query
     query, countquery = create_get_queries(valid_args)
-    print(query)
 
     # content negotiation flag
     representation = util.get_representation(request)
