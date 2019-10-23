@@ -18,9 +18,16 @@ def create_get_constraints():
 
 
 def create_get_query(valid_args):
+    # escape ' in genre strings
+    if 'genre' in valid_args:
+        genre = ''
+        for c in valid_args['genre']:
+            if(ord(c) == ord("'")):
+                genre += "\\"
+            genre += c
+        valid_args['genre'] = genre
 
     where = False
-
     query = 'SELECT * FROM song'
 
     if 'id' in valid_args:

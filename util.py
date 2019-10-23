@@ -20,7 +20,7 @@ def sanitize(args, constraints):
             for ac in acs:
                 if not ac.check(arg, args[arg]):
                     del valid_args[arg]
-                    print("check failed: '" + str(arg) + "' : '" + str(args[arg]) + "'")
+                    # print("check failed: '" + str(arg) + "' : '" + str(args[arg]) + "'")
                     break
     return valid_args
 
@@ -56,10 +56,13 @@ class TypeConstraint(Constraint):
         if(self.type == 'str'):
             for char in input:
                 n = ord(char)
-                if not ((n >= ord('a') and n <= ord('z'))
-                        or (n >= ord('A') and n <= ord('Z'))
-                        or (n >= ord('0') and n <= ord('9'))
-                        or n == ord(' ')):
+                # only allow ' in genre
+                if(name == 'genre' and n == ord("'")):
+                    return True
+                elif not ((n >= ord('a') and n <= ord('z'))
+                          or (n >= ord('A') and n <= ord('Z'))
+                          or (n >= ord('0') and n <= ord('9'))
+                          or n in [ord(' '), ord('&'), ord('-')]):
                     return False
         if(self.type == 'int'):
             # negative sign

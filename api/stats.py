@@ -4,12 +4,14 @@ import util
 import json
 from statistics import mean, median, stdev
 
+
 def create_constraints():
     constraints = {
         'artist': [util.TypeConstraint('str'), util.LengthConstraint(18, 18)],
         'year': [util.TypeConstraint('int')]
     }
     return constraints
+
 
 def create_query(valid_args):
     # artist must be in args
@@ -23,12 +25,14 @@ def create_query(valid_args):
 def format_json(res):
     return json.dumps(res)
 
+
 def format_csv(res):
     delim = ' '
     newline = '\n'
     csv = 'median' + delim + 'mean' + delim + 'standard deviation' + newline
     csv += res['median'] + delim + res['mean'] + delim + res['standard deviation']
     return csv
+
 
 def construct_blueprint(connector):
     '''constructs blueprint'''
