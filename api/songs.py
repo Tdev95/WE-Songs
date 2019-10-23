@@ -19,7 +19,7 @@ def create_get_constraints():
 
 def create_get_queries(valid_args):
     # escape ' in genre strings
-    if 'genre' in valid_args:
+    if 'genre' in valid_args and valid_args['genre'] != '':
         genre = ''
         for c in valid_args['genre']:
             if(ord(c) == ord("'")):
