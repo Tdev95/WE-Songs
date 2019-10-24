@@ -22,15 +22,6 @@ def create_constraints():
 
 
 def create_query(valid_args):
-    # escape ' in genre strings
-    if 'genre' in valid_args:
-        genre = ''
-    for c in valid_args[genre]:
-        if(ord(c) == ord("'")):
-            genre += "\'"
-        genre += c
-    valid_args['genre'] = genre
-
     query = 'SELECT key_in, COUNT(*)'
     where = False
 
