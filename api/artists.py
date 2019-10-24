@@ -10,7 +10,8 @@ def create_constraints():
         'name': [util.TypeConstraint('str'), util.LengthConstraint(1, 100)],
         'genre': [util.TypeConstraint('str'), util.LengthConstraint(1, 100)],
         'sort': [util.ValueConstraint(['hotness', 'familiarity'])],
-        'page': [util.TypeConstraint('int'), util.LengthConstraint(1, 10)]
+        'page': [util.TypeConstraint('int'), util.LengthConstraint(1, 10)],
+        'wiki': [util.TypeConstraint('int'), util.LengthConstraint(1, 1)]
     }
     return constraints
 
@@ -97,7 +98,7 @@ def valid_url(valid_args):
     return url
 
 
-def format_json(rows):
+def format_json(rows, wiki):
     # format to json
     list = []
     for row in rows:
@@ -113,19 +114,21 @@ def format_json(rows):
         d['similar'] = row[7]
         d['genre'] = row[8]
         d['genre_freq'] = row[9]
-        d['wiki'] = util.wiki_search_page(d['name'])
+        d['wiki'] = None
+        if wiki:
+            d['wiki'] = util.wiki_search_page(d['name'])
         list.append(d)
 
     return json.dumps(list)
 
 
-def format_csv(rows):
+def format_csv(rows, wiki):
     # format to csv
     delim = ' '
     newline = '\n'
     csv = f'id{delim}songs{delim}familiarity{delim}hotness{delim}lattitude{delim}location' + \
         '{delim}longitude{delim}name{delim}similar' + \
-        '{delim}genre{delim}genre_freq{newline}'
+        '{delim}genre{delim}genre_freq{delim}wiki{newline}'
     for row in rows:
         csv += row[0] + delim  # id
         csv += f'/songs?artist={row[0]}' + delim  # songs of artist
@@ -137,8 +140,11 @@ def format_csv(rows):
         csv += f'"{row[6]}"{delim}'  # name
         csv += str(row[7]) + delim  # similar
         csv += f'"{row[8]}"{delim}'  # genre
-        csv += str(row[9]) + delim
-        csv += str(util.wiki_search_page(row[6])) + newline  # genre_freq
+        csv += str(row[9]) + delim # genre_freq
+        if wiki:
+            csv += str(util.wiki_search_page(row[6])) + newline
+        else:
+            csv += str(None) + newline
     return csv
 
 
@@ -171,6 +177,11 @@ def construct_blueprint(connector):
 
         # create query
         query, countquery = create_queries(valid_args)
+
+        wiki = False
+        # if there is 'wiki=1' in query
+        if ('wiki' in valid_args and valid_args['wiki'] == '1'):
+            wiki = True
 
         # content negotiation flag
         representation = util.get_representation(request)
@@ -207,10 +218,10 @@ def construct_blueprint(connector):
             with util.execute_query(connector, query) as rows:
 
                 if representation == 'text/json':
-                    response.set_data(format_json(rows))
+                    response.set_data(format_json(rows, wiki))
                     response.headers['content-type'] = 'text/json'
                 else:
-                    response.set_data(format_csv(rows))
+                    response.set_data(format_csv(rows, wiki))
                     response.headers['content-type'] = 'text/csv'
                 response.status = '200'
                 return response
