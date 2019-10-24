@@ -199,7 +199,6 @@
   <div class="method-summary"></div>
   <h4><a href="#Artist">Artist</a></h4>
   <ul>
-  <li><a href="#getArtistById"><code><span class="http-method">get</span> /artists/{artistId}</code></a></li>
   <li><a href="#getArtists"><code><span class="http-method">get</span> /arists</code></a></li>
   </ul>
   <h4><a href="#Histogram">Histogram</a></h4>
@@ -213,75 +212,14 @@
   <li><a href="#getSongById"><code><span class="http-method">get</span> /songs/{songId}</code></a></li>
   <li><a href="#getSongs"><code><span class="http-method">get</span> /songs</code></a></li>
   <li><a href="#patchSong"><code><span class="http-method">patch</span> /songs/{songId}</code></a></li>
-  <li><a href="#postSong"><code><span class="http-method">post</span> /songs</code></a></li>
+  <li><a href="#postSongById"><code><span class="http-method">post</span> /songs/{songId}</code></a></li>
   </ul>
   <h4><a href="#Statistic">Statistic</a></h4>
   <ul>
-  <li><a href="#findStatisticsByYear"><code><span class="http-method">get</span> /statistics</code></a></li>
+  <li><a href="#findStatisticsByYear"><code><span class="http-method">get</span> /stats</code></a></li>
   </ul>
 
   <h1><a name="Artist">Artist</a></h1>
-  <div class="method"><a name="getArtistById"></a>
-    <div class="method-path">
-    <a class="up" href="#__Methods">Up</a>
-    <pre class="get"><code class="huge"><span class="http-method">get</span> /artists/{artistId}</code></pre></div>
-    <div class="method-summary">Find artist by ID (<span class="nickname">getArtistById</span>)</div>
-    <div class="method-notes">Returns a single artist specified by an ID</div>
-
-    <h3 class="field-label">Path parameters</h3>
-    <div class="field-items">
-      <div class="param">artistId (required)</div>
-      
-            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; The ID of the artist </div>    </div>  <!-- field-items -->
-
-
-
-
-
-
-    <h3 class="field-label">Return type</h3>
-    <div class="return-type">
-      <a href="#Artist">Artist</a>
-      
-    </div>
-
-    <!--Todo: process Response Object and its headers, schema, examples -->
-
-    <h3 class="field-label">Example data</h3>
-    <div class="example-data-content-type">Content-Type: application/json</div>
-    <pre class="example"><code>{
-  "similar" : 2.302136,
-  "familiarity" : 0.08008282,
-  "latitude" : 1.4658129,
-  "name" : "name",
-  "genre" : "genre",
-  "location" : 5,
-  "id" : "id",
-  "hotness" : 0.6027456,
-  "genre_freq" : 7.0614014,
-  "longitude" : 5.962134
-}</code></pre>
-
-    <h3 class="field-label">Produces</h3>
-    This API call produces the following media types according to the <span class="header">Accept</span> request header;
-    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
-    <ul>
-      <li><code>application/json</code></li>
-      <li><code>text/csv</code></li>
-    </ul>
-
-    <h3 class="field-label">Responses</h3>
-    <h4 class="field-label">200</h4>
-    Successful operation
-        <a href="#Artist">Artist</a>
-    <h4 class="field-label">400</h4>
-    Invalid artistId value
-        <a href="#"></a>
-    <h4 class="field-label">404</h4>
-    This artist does not exist
-        <a href="#"></a>
-  </div> <!-- method -->
-  <hr/>
   <div class="method"><a name="getArtists"></a>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
@@ -326,6 +264,7 @@
   "id" : "id",
   "hotness" : 0.6027456,
   "genre_freq" : 7.0614014,
+  "songs_link" : "GET /songs/artist_id=id",
   "longitude" : 5.962134
 }, {
   "similar" : 2.302136,
@@ -337,6 +276,7 @@
   "id" : "id",
   "hotness" : 0.6027456,
   "genre_freq" : 7.0614014,
+  "songs_link" : "GET /songs/artist_id=id",
   "longitude" : 5.962134
 } ]</code></pre>
 
@@ -500,6 +440,9 @@
     <h4 class="field-label">201</h4>
     Song deleted/not found
         <a href="#"></a>
+    <h4 class="field-label">400</h4>
+    Bad request
+        <a href="#"></a>
     <h4 class="field-label">404</h4>
     This song does not exist
         <a href="#"></a>
@@ -534,45 +477,33 @@
     <h3 class="field-label">Example data</h3>
     <div class="example-data-content-type">Content-Type: application/json</div>
     <pre class="example"><code>{
-  "mode_confidence" : 6.846853,
-  "artist" : {
-    "similar" : 2.302136,
-    "familiarity" : 0.08008282,
-    "latitude" : 1.4658129,
-    "name" : "name",
-    "genre" : "genre",
-    "location" : 5,
-    "id" : "id",
-    "hotness" : 0.6027456,
-    "genre_freq" : 7.0614014,
-    "longitude" : 5.962134
-  },
-  "year" : 8,
-  "release" : {
-    "name" : 6,
-    "id" : 0
-  },
-  "bars_start" : 2.302136,
-  "loudness" : 1.0246457,
-  "tempo" : 5.025005,
-  "title" : 6,
-  "key_confidence" : 1.2315135,
-  "bars_confidence" : 5.637377,
-  "duration" : 3.6160767,
+  "release_id" : 0,
+  "mode_confidence" : 1.4894159,
+  "year" : 6,
+  "bars_start" : 5.637377,
+  "loudness" : 1.2315135,
+  "tempo" : 4.9652185,
+  "title" : 9,
+  "key_confidence" : 7.386282,
+  "bars_confidence" : 5.962134,
+  "duration" : 9.301444,
   "mode" : 1,
-  "start_of_fade_out" : 7.4577446,
+  "start_of_fade_out" : 6.846853,
   "id" : "id",
-  "time_signature_confidence" : 9.36931,
-  "key" : 7.386282,
-  "tatums_start" : 4.9652185,
-  "time_signature" : 9.965781,
-  "artist_mbta_count" : 5.962134,
-  "beats_confidence" : 7.0614014,
-  "end_of_fade_in" : 2.027123,
-  "hotness" : 4.145608,
-  "beats_start" : 9.301444,
-  "artist_mbta" : 1.4658129,
-  "tatums_confidence" : 1.1730742
+  "time_signature_confidence" : 9.965781,
+  "key" : 4.145608,
+  "tatums_start" : 1.1730742,
+  "time_signature" : 5.025005,
+  "artist_mbta_count" : 1.4658129,
+  "beats_confidence" : 2.302136,
+  "release_link" : "GET /songs?release=release_id",
+  "end_of_fade_in" : 3.6160767,
+  "hotness" : 2.027123,
+  "artist_id" : "artist_id",
+  "beats_start" : 7.0614014,
+  "artist_link" : "GET /artists/id=artist_id",
+  "artist_mbta" : 6.0274563,
+  "tatums_confidence" : 7.4577446
 }</code></pre>
 
     <h3 class="field-label">Produces</h3>
@@ -585,13 +516,13 @@
 
     <h3 class="field-label">Responses</h3>
     <h4 class="field-label">200</h4>
-    Successful operation
+    Successful operation (artist; GET /artists/{artistId})
         <a href="#Song">Song</a>
     <h4 class="field-label">400</h4>
-    Invalid songId value
+    Bad request
         <a href="#"></a>
     <h4 class="field-label">404</h4>
-    This artist does not exist
+    This song does not exist
         <a href="#"></a>
   </div> <!-- method -->
   <hr/>
@@ -632,85 +563,61 @@
     <h3 class="field-label">Example data</h3>
     <div class="example-data-content-type">Content-Type: application/json</div>
     <pre class="example"><code>[ {
-  "mode_confidence" : 6.846853,
-  "artist" : {
-    "similar" : 2.302136,
-    "familiarity" : 0.08008282,
-    "latitude" : 1.4658129,
-    "name" : "name",
-    "genre" : "genre",
-    "location" : 5,
-    "id" : "id",
-    "hotness" : 0.6027456,
-    "genre_freq" : 7.0614014,
-    "longitude" : 5.962134
-  },
-  "year" : 8,
-  "release" : {
-    "name" : 6,
-    "id" : 0
-  },
-  "bars_start" : 2.302136,
-  "loudness" : 1.0246457,
-  "tempo" : 5.025005,
-  "title" : 6,
-  "key_confidence" : 1.2315135,
-  "bars_confidence" : 5.637377,
-  "duration" : 3.6160767,
+  "release_id" : 0,
+  "mode_confidence" : 1.4894159,
+  "year" : 6,
+  "bars_start" : 5.637377,
+  "loudness" : 1.2315135,
+  "tempo" : 4.9652185,
+  "title" : 9,
+  "key_confidence" : 7.386282,
+  "bars_confidence" : 5.962134,
+  "duration" : 9.301444,
   "mode" : 1,
-  "start_of_fade_out" : 7.4577446,
+  "start_of_fade_out" : 6.846853,
   "id" : "id",
-  "time_signature_confidence" : 9.36931,
-  "key" : 7.386282,
-  "tatums_start" : 4.9652185,
-  "time_signature" : 9.965781,
-  "artist_mbta_count" : 5.962134,
-  "beats_confidence" : 7.0614014,
-  "end_of_fade_in" : 2.027123,
-  "hotness" : 4.145608,
-  "beats_start" : 9.301444,
-  "artist_mbta" : 1.4658129,
-  "tatums_confidence" : 1.1730742
+  "time_signature_confidence" : 9.965781,
+  "key" : 4.145608,
+  "tatums_start" : 1.1730742,
+  "time_signature" : 5.025005,
+  "artist_mbta_count" : 1.4658129,
+  "beats_confidence" : 2.302136,
+  "release_link" : "GET /songs?release=release_id",
+  "end_of_fade_in" : 3.6160767,
+  "hotness" : 2.027123,
+  "artist_id" : "artist_id",
+  "beats_start" : 7.0614014,
+  "artist_link" : "GET /artists/id=artist_id",
+  "artist_mbta" : 6.0274563,
+  "tatums_confidence" : 7.4577446
 }, {
-  "mode_confidence" : 6.846853,
-  "artist" : {
-    "similar" : 2.302136,
-    "familiarity" : 0.08008282,
-    "latitude" : 1.4658129,
-    "name" : "name",
-    "genre" : "genre",
-    "location" : 5,
-    "id" : "id",
-    "hotness" : 0.6027456,
-    "genre_freq" : 7.0614014,
-    "longitude" : 5.962134
-  },
-  "year" : 8,
-  "release" : {
-    "name" : 6,
-    "id" : 0
-  },
-  "bars_start" : 2.302136,
-  "loudness" : 1.0246457,
-  "tempo" : 5.025005,
-  "title" : 6,
-  "key_confidence" : 1.2315135,
-  "bars_confidence" : 5.637377,
-  "duration" : 3.6160767,
+  "release_id" : 0,
+  "mode_confidence" : 1.4894159,
+  "year" : 6,
+  "bars_start" : 5.637377,
+  "loudness" : 1.2315135,
+  "tempo" : 4.9652185,
+  "title" : 9,
+  "key_confidence" : 7.386282,
+  "bars_confidence" : 5.962134,
+  "duration" : 9.301444,
   "mode" : 1,
-  "start_of_fade_out" : 7.4577446,
+  "start_of_fade_out" : 6.846853,
   "id" : "id",
-  "time_signature_confidence" : 9.36931,
-  "key" : 7.386282,
-  "tatums_start" : 4.9652185,
-  "time_signature" : 9.965781,
-  "artist_mbta_count" : 5.962134,
-  "beats_confidence" : 7.0614014,
-  "end_of_fade_in" : 2.027123,
-  "hotness" : 4.145608,
-  "beats_start" : 9.301444,
-  "artist_mbta" : 1.4658129,
-  "tatums_confidence" : 1.1730742
+  "time_signature_confidence" : 9.965781,
+  "key" : 4.145608,
+  "tatums_start" : 1.1730742,
+  "time_signature" : 5.025005,
+  "artist_mbta_count" : 1.4658129,
+  "beats_confidence" : 2.302136,
+  "release_link" : "GET /songs?release=release_id",
+  "end_of_fade_in" : 3.6160767,
+  "hotness" : 2.027123,
+  "artist_id" : "artist_id",
+  "beats_start" : 7.0614014,
+  "artist_link" : "GET /artists/id=artist_id",
+  "artist_mbta" : 6.0274563,
+  "tatums_confidence" : 7.4577446
 } ]</code></pre>
 
     <h3 class="field-label">Produces</h3>
@@ -771,45 +678,33 @@
     <h3 class="field-label">Example data</h3>
     <div class="example-data-content-type">Content-Type: application/json</div>
     <pre class="example"><code>{
-  "mode_confidence" : 6.846853,
-  "artist" : {
-    "similar" : 2.302136,
-    "familiarity" : 0.08008282,
-    "latitude" : 1.4658129,
-    "name" : "name",
-    "genre" : "genre",
-    "location" : 5,
-    "id" : "id",
-    "hotness" : 0.6027456,
-    "genre_freq" : 7.0614014,
-    "longitude" : 5.962134
-  },
-  "year" : 8,
-  "release" : {
-    "name" : 6,
-    "id" : 0
-  },
-  "bars_start" : 2.302136,
-  "loudness" : 1.0246457,
-  "tempo" : 5.025005,
-  "title" : 6,
-  "key_confidence" : 1.2315135,
-  "bars_confidence" : 5.637377,
-  "duration" : 3.6160767,
+  "release_id" : 0,
+  "mode_confidence" : 1.4894159,
+  "year" : 6,
+  "bars_start" : 5.637377,
+  "loudness" : 1.2315135,
+  "tempo" : 4.9652185,
+  "title" : 9,
+  "key_confidence" : 7.386282,
+  "bars_confidence" : 5.962134,
+  "duration" : 9.301444,
   "mode" : 1,
-  "start_of_fade_out" : 7.4577446,
+  "start_of_fade_out" : 6.846853,
   "id" : "id",
-  "time_signature_confidence" : 9.36931,
-  "key" : 7.386282,
-  "tatums_start" : 4.9652185,
-  "time_signature" : 9.965781,
-  "artist_mbta_count" : 5.962134,
-  "beats_confidence" : 7.0614014,
-  "end_of_fade_in" : 2.027123,
-  "hotness" : 4.145608,
-  "beats_start" : 9.301444,
-  "artist_mbta" : 1.4658129,
-  "tatums_confidence" : 1.1730742
+  "time_signature_confidence" : 9.965781,
+  "key" : 4.145608,
+  "tatums_start" : 1.1730742,
+  "time_signature" : 5.025005,
+  "artist_mbta_count" : 1.4658129,
+  "beats_confidence" : 2.302136,
+  "release_link" : "GET /songs?release=release_id",
+  "end_of_fade_in" : 3.6160767,
+  "hotness" : 2.027123,
+  "artist_id" : "artist_id",
+  "beats_start" : 7.0614014,
+  "artist_link" : "GET /artists/id=artist_id",
+  "artist_mbta" : 6.0274563,
+  "tatums_confidence" : 7.4577446
 }</code></pre>
 
     <h3 class="field-label">Produces</h3>
@@ -822,20 +717,28 @@
 
     <h3 class="field-label">Responses</h3>
     <h4 class="field-label">200</h4>
-    Successful operation
+    Successful operation (artist; GET /artists/{artistId})
         <a href="#Song">Song</a>
+    <h4 class="field-label">400</h4>
+    Bad request
+        <a href="#"></a>
     <h4 class="field-label">404</h4>
     This song does not exist
         <a href="#"></a>
   </div> <!-- method -->
   <hr/>
-  <div class="method"><a name="postSong"></a>
+  <div class="method"><a name="postSongById"></a>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="post"><code class="huge"><span class="http-method">post</span> /songs</code></pre></div>
-    <div class="method-summary">Add a new song to the dataset (<span class="nickname">postSong</span>)</div>
-    <div class="method-notes"></div>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /songs/{songId}</code></pre></div>
+    <div class="method-summary">Add a new song to the dataset (<span class="nickname">postSongById</span>)</div>
+    <div class="method-notes">Adds a single song specified by its ID</div>
 
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">songId (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Unique dataset ID of a song </div>    </div>  <!-- field-items -->
 
     <h3 class="field-label">Consumes</h3>
     This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
@@ -848,7 +751,7 @@
     <div class="field-items">
       <div class="param">body <a href="#Song">Song</a> (required)</div>
       
-            <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash; Song object that needs to be added to the dataset </div>
+            <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
                 </div>  <!-- field-items -->
 
 
@@ -861,10 +764,13 @@
 
     <h3 class="field-label">Responses</h3>
     <h4 class="field-label">201</h4>
-    Song succesfully created
+    Song succesfully added
         <a href="#"></a>
     <h4 class="field-label">400</h4>
-    Song could not have been created
+    Bad request
+        <a href="#"></a>
+    <h4 class="field-label">409</h4>
+    Song already in database
         <a href="#"></a>
   </div> <!-- method -->
   <hr/>
@@ -872,9 +778,9 @@
   <div class="method"><a name="findStatisticsByYear"></a>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="get"><code class="huge"><span class="http-method">get</span> /statistics</code></pre></div>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /stats</code></pre></div>
     <div class="method-summary">Descriptive statistics (<span class="nickname">findStatisticsByYear</span>)</div>
-    <div class="method-notes">Descriptive statistics (mean, median, standard deviation) for the popularity of the songs for a particular artist with an optional filter by year</div>
+    <div class="method-notes">Descriptive statistics (mean, median, standard deviation) for the popularity of the songs for a particular artist with an optional filter by year. If there are no songs of that artist for this year all values in resnonsу will be null. (I.e. { &amp;quot;mean&amp;quot;:null, &amp;quot;median&amp;quot;: null, &amp;quot;standard deviation&amp;quot;: null })</div>
 
 
 
@@ -882,7 +788,7 @@
 
     <h3 class="field-label">Query parameters</h3>
     <div class="field-items">
-      <div class="param">artistId (required)</div>
+      <div class="param">artist (required)</div>
       
             <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; The ID of the artist </div>      <div class="param">year (optional)</div>
       
@@ -950,6 +856,8 @@
 <div class="param">similar (optional)</div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
 <div class="param">genre (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
 <div class="param">genre_freq (optional)</div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
+<div class="param">songs_link (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: GET /songs/artist_id&#x3D;id</span></div>
     </div>  <!-- field-items -->
   </div>
   <div class="model">
@@ -980,8 +888,8 @@
     
     <div class="field-items">
       <div class="param">id </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
-<div class="param">artist (optional)</div><div class="param-desc"><span class="param-type"><a href="#Artist">Artist</a></span>  </div>
-<div class="param">release (optional)</div><div class="param-desc"><span class="param-type"><a href="#Release">Release</a></span>  </div>
+<div class="param">artist_id (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">release_id (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  format: int32</div>
 <div class="param">artist_mbta (optional)</div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
 <div class="param">artist_mbta_count (optional)</div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
 <div class="param">bars_confidence (optional)</div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
@@ -1004,6 +912,10 @@
 <div class="param">time_signature_confidence (optional)</div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
 <div class="param">title (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  format: int32</div>
 <div class="param">year (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  format: int3</div>
+<div class="param">artist_link (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: GET /artists/id&#x3D;artist_id</span></div>
+<div class="param">release_link (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: GET /songs?release&#x3D;release_id</span></div>
     </div>  <!-- field-items -->
   </div>
   <div class="model">

@@ -99,7 +99,7 @@ def delete(connector, request, song_id):
     response = Response()
     response.status = '201'
     response.headers['content-type'] = 'text/plain'
-    response.set_data(f'Deleted {rowcount} song(s)')
+    response.set_data(f'Deleted song with id {valid_args["Song"]}')
     return response
 
 
@@ -185,7 +185,7 @@ def post(connector, request):
         valid_args = util.sanitize(args, constraints)
         query = create_post_query(valid_args)
 
-        # execute query and obtain # rows changed
+        # execute query
         cursor = connector.cursor()
         cursor.execute(query)
         connector.commit()
@@ -195,7 +195,7 @@ def post(connector, request):
         response = Response()
         response.status = '201'
         response.headers['content-type'] = 'text/plain'
-        response.set_data(f'Added {rowcount} song(s)')
+        response.set_data(f'Added song with id {valid_args["id"]}')
         return response
     except mysql.connector.IntegrityError:
         # song already in database
@@ -244,15 +244,20 @@ def patch(connector, request, song_id):
         valid_args = util.sanitize(args, constraints)
         query = create_patch_query(id, valid_args)
 
-        # execute query
-        print(query)
+        # not using util.execute_query in order to obtain rowcount
         cursor = connector.cursor()
         cursor.execute(query)
         connector.commit()
+        rowcount = cursor.rowcount
+
+        # no song was found
+        if (rowcount == 0):
+            abort(404)
 
         # format response
         response = Response()
         response.status = '200'
+        response.set_data(f'Modified song with id {valid_args["id"]}')
         return response
     except ValueError:
         # bad request if anything fails
