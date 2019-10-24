@@ -113,6 +113,7 @@ def format_json(rows):
         d['similar'] = row[7]
         d['genre'] = row[8]
         d['genre_freq'] = row[9]
+        d['wiki'] = util.wiki_search_page(d['name'])
         list.append(d)
 
     return json.dumps(list)
@@ -136,7 +137,8 @@ def format_csv(rows):
         csv += f'"{row[6]}"{delim}'  # name
         csv += str(row[7]) + delim  # similar
         csv += f'"{row[8]}"{delim}'  # genre
-        csv += str(row[9]) + newline  # genre_freq
+        csv += str(row[9]) + delim
+        csv += str(util.wiki_search_page(row[6])) + newline  # genre_freq
     return csv
 
 

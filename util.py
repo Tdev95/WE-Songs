@@ -1,5 +1,5 @@
 from contextlib import contextmanager
-
+import wikipediaapi
 
 @contextmanager
 def execute_query(connection, query):
@@ -35,6 +35,15 @@ def get_representation(request):
         representation = 'text/csv'
     return representation
 
+
+def wiki_search_page(page_name):
+    """ Returns link to wikipedia page by its name.
+     If there is no such page returns None """
+    wiki_wiki = wikipediaapi.Wikipedia('en')
+    page = wiki_wiki.page(page_name)
+    if not page.exists():
+        return None
+    return page.fullurl
 
 class Constraint():
     def check(self, input):
@@ -113,3 +122,4 @@ class CustomConstraint(Constraint):
 
     def check(self, name, input):
         return self.function(name, input)
+
