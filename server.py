@@ -49,10 +49,13 @@ def songCRUD():
 def keysHome():
     return render_template('keys.html')
 
-
 @app.route('/genres/home', methods=['GET'])
 def genresHome():
     return render_template('genres.html')
+
+@app.route('/stats/home', methods=['GET'])
+def statsHome():
+    return render_template('stats.html')
 
 
 # run application if standalone mode
