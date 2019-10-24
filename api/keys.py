@@ -14,8 +14,9 @@ def create_constraints():
         return value >= 0 and value <= 1
 
     constraints = {
-        'genre': [util.TypeConstraint('str')],
-        'hotnessThreshold': [util.TypeConstraint('float'), util.CustomConstraint(threshold_check)]
+        'genre': [util.TypeConstraint('str'), util.LengthConstraint(1, 100)],
+        'hotnessThreshold': [util.TypeConstraint('float'), util.CustomConstraint(threshold_check),
+                             util.LengthConstraint(1, 20)]
     }
     return constraints
 

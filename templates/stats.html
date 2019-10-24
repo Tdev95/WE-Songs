@@ -1,0 +1,16 @@
+{% extends 'home.html' %}
+
+{% block scripts %}
+<script type="text/javascript" src="{{url_for('static', filename='js/stats.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<h1>STATS</h1>
+<form>
+	Artist ID <input type="text" name="artist_id" required><br>
+	Year: <input type="number" name="year"><br>
+	<input type="button" value="Submit" 
+		onclick="showStats(artist_id.value, year.value);">
+</form>
+<p id="resultStats">[]</p>
+{% endblock %}

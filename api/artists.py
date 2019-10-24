@@ -7,58 +7,75 @@ import util
 def create_constraints():
     constraints = {
         'id': [util.TypeConstraint('str'), util.LengthConstraint(18, 18)],
-        'name': [util.TypeConstraint('str')],
-        'genre': [util.TypeConstraint('str')],
+        'name': [util.TypeConstraint('str'), util.LengthConstraint(1, 100)],
+        'genre': [util.TypeConstraint('str'), util.LengthConstraint(1, 100)],
         'sort': [util.ValueConstraint(['hotness', 'familiarity'])],
-        'page': [util.TypeConstraint('int')]
+        'page': [util.TypeConstraint('int'), util.LengthConstraint(1, 10)]
     }
     return constraints
 
 
-def create_query(valid_args):
+def create_queries(valid_args):
+    # escape ' in genre strings
+    if 'genre' in valid_args:
+        genre = ''
+        for c in valid_args['genre']:
+            if(ord(c) == ord("'")):
+                genre += '\\'
+            genre += c
+        valid_args['genre'] = genre
+
     # flag used to detect whether WHERE clause was used
-    where = False
+    where_flag = False
 
     # base query
-    query = 'SELECT * FROM artist'
+    select1 = 'SELECT *'
+    select2 = 'SELECT COUNT(*)'
+    from1 = 'FROM artist'
+
+    where = ''
 
     # filter by id, name and/or genre
     if 'id' in valid_args:
-        if not where:
-            query += ' WHERE '
-            where = True
-        query += 'id = "' + valid_args['id'] + '"'
+        if not where_flag:
+            where += ' WHERE '
+            where_flag = True
+        where += 'id = "' + valid_args['id'] + '"'
 
     if 'name' in valid_args:
-        if not where:
-            query += ' WHERE '
-            where = True
+        if not where_flag:
+            where += ' WHERE '
+            where_flag = True
         else:
-            query += ' AND '
-        query += 'name LIKE "%' + valid_args['name'] + '%"'
+            where += ' AND '
+        where += 'name LIKE "%' + valid_args['name'] + '%"'
 
     if 'genre' in valid_args:
-        if not where:
-            query += ' WHERE '
-            where = True
+        if not where_flag:
+            where += ' WHERE '
+            where_flag = True
         else:
-            query += ' AND '
-        query += 'genre LIKE "%' + valid_args['genre'] + '%"'
+            where += ' AND '
+        where += 'genre LIKE "%' + valid_args['genre'] + '%"'
 
     # sorting
+    order = ''
     if 'sort' in valid_args:
         if valid_args['sort'] == 'hotness':
-            query += ' ORDER BY hotness'  # TODO: database spelling
+            order += ' ORDER BY hotness'  # TODO: database spelling
         if valid_args['sort'] == 'familiarity':
-            query += ' ORDER BY familiarity'
+            order += ' ORDER BY familiarity'
 
     # pagination
+    group = ''
     page = 1
     if 'page' in valid_args:
         page = int(valid_args['page'])
-    query += ' LIMIT 50 offset ' + str((page-1) * 50) + ';'
+    group += ' LIMIT 50 offset ' + str((page-1) * 50) + ';'
 
-    return query
+    query1 = f'{select1} {from1} {where} {order} {group};'
+    query2 = f'{select2} {from1} {where} {order}'
+    return (query1, query2)
 
 
 def valid_url(valid_args):
@@ -151,15 +168,41 @@ def construct_blueprint(connector):
             return redirect(url, code=303)
 
         # create query
-        query = create_query(valid_args)
+        query, countquery = create_queries(valid_args)
 
         # content negotiation flag
         representation = util.get_representation(request)
 
+        response = Response()
+        # get # of rows
+        try:
+            with util.execute_query(connector, countquery) as count:
+                rows = count[0][0]
+                pages = rows/50 + 1
+
+                url = '/artists?'
+                for arg in valid_args:
+                    if arg != 'page':
+                        url += f'{arg}={valid_args[arg]}&'
+
+                # figure out current page
+                if('page' in valid_args):
+                    page = int(valid_args['page'])
+                else:
+                    page = 1
+
+                # add links to previous, next page depending on page and pages
+                if page > 1:
+                    response.headers['Page-Previous'] = url + f'page={page-1}'
+                if page < pages:
+                    response.headers['Page-Next'] = url + f'page={page+1}'
+        except Exception:
+            # bad request if query fails
+            abort(400)
+
         # generate response
         try:
             with util.execute_query(connector, query) as rows:
-                response = Response()
 
                 if representation == 'text/json':
                     response.set_data(format_json(rows))
@@ -172,4 +215,12 @@ def construct_blueprint(connector):
         except Exception:
             # bad request if query fails
             abort(400)
+
+    @blueprint.route('/artists/<artistId>', methods=['GET'])
+    def artistId(artistId):
+        print(artistId);
+        response = Response ();
+        response.status = '200';
+        return response;
+
     return blueprint

@@ -1,0 +1,41 @@
+{% extends 'home.html' %}
+
+{% block scripts %}
+<script type="text/javascript" src="{{url_for('static', filename='js/songCRUD.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<h1>SONG CRUD</h1>
+<!-- Form the CRUD songs -->
+<form id="form">
+	Song Id: <input type="text" name="songId" required>
+	<input type="button" value="Search" onclick="searchSong (songId.value);"><br>
+	Artist Id: <input type="text" name="artist_id"><br>
+	Release Id: <input type="number" name="release_id"><br>
+	artist_mbtags: <input type="number" name="artist_mbtags" disabled=""><br>
+	artist_mbtags_count: <input type="number" name="artist_mbtags_count"><br>
+	bars_confidence: <input type="number" name="bars_confidence"><br>
+	bars_start: <input type="number" name="bars_start"><br>
+	beats_confidence: <input type="number" name="beats_confidence"><br>
+	beats_start: <input type="number" name="beats_start"><br>
+	duration: <input type="number" name="duration"><br>
+	end_of_fade_in: <input type="number" name="end_of_fade_in"><br>
+	hotness: <input type="number" name="hotness"><br>
+	key_in: <input type="number" name="key_in"><br>
+	key_confidence: <input type="number" name="key_confidence"><br>
+	loudness: <input type="number" name="loudness"><br>
+	mode: <input type="number" name="mode"><br>
+	mode_confidence: <input type="number" name="mode_confidence"><br>
+	start_of_fade_out: <input type="number" name="start_of_fade_out"><br>
+	tatums_confidence: <input type="number" name="tatums_confidence"><br>
+	tatums_start: <input type="number" name="tatums_start"><br>
+	tempo: <input type="number" name="tempo"><br>
+	time_signature: <input type="number" name="time_signature"><br>
+	time_signature_confidence: <input type="number" name="time_signature_confidence"><br>
+	title: <input type="number" name="title" disabled=""><br>
+	year: <input type="number" name="year"><br>
+	<input type="button" value="Create" onclick="addSong (songId.value);">
+	<input type="button" value="Modify" onclick="modifySong (songId.value);">
+	<input type="button" value="Remove" onclick="deleteSong (songId.value);">
+</form>
+{% endblock %}

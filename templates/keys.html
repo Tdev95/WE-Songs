@@ -9,7 +9,7 @@
 <h1>KEYS</h1>
 <form>
 	Genre: <input type="text" name="genre"><br>
-	Hotness Threshold: <input type="number" name="hotnessThreshold"><br>
+	Hotness Threshold: <input type="number" name="hotnessThreshold" min="0" max="1"><br>
 	<input type="button" value="Submit" 
 		onclick="keysHistogram(genre.value, hotnessThreshold.value);">
 </form>

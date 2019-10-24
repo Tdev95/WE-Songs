@@ -7,8 +7,8 @@ import json
 
 def create_constraints():
     constraints = {
-        'threshold': [util.TypeConstraint('int')],
-        'year': [util.TypeConstraint('int')]
+        'threshold': [util.TypeConstraint('int'), util.LengthConstraint(1, 20)],
+        'year': [util.TypeConstraint('int'), util.LengthConstraint(1, 5)]
     }
     return constraints
 
