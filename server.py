@@ -7,7 +7,7 @@ from api import artists
 from api import genres
 from api import keys
 from api import songs
-from api import songs_cud
+from api import songs_crud
 from api import stats
 
 # create application instance
@@ -24,7 +24,7 @@ app.register_blueprint(artists.construct_blueprint(connection))
 app.register_blueprint(genres.construct_blueprint(connection))
 app.register_blueprint(keys.construct_blueprint(connection))
 app.register_blueprint(songs.construct_blueprint(connection))
-app.register_blueprint(songs_cud.construct_blueprint(connection))
+app.register_blueprint(songs_crud.construct_blueprint(connection))
 app.register_blueprint(stats.construct_blueprint(connection))
 
 
@@ -37,11 +37,13 @@ def home():
 def artistsHome():
     return render_template('artist.html')
 
-
 @app.route('/songs/home', methods=['GET'])
 def songsHome():
     return render_template('songs.html')
 
+@app.route('/songs/home/songCRUD', methods=['GET'])
+def songCRUD():
+    return render_template('songCRUD.html')
 
 @app.route('/keys/home', methods=['GET'])
 def keysHome():

@@ -215,4 +215,12 @@ def construct_blueprint(connector):
         except Exception:
             # bad request if query fails
             abort(400)
+
+    @blueprint.route('/artists/<artistId>', methods=['GET'])
+    def artistId(artistId):
+        print(artistId);
+        response = Response ();
+        response.status = '200';
+        return response;
+
     return blueprint
