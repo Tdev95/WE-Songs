@@ -1,0 +1,25 @@
+{% extends 'home.html' %}
+
+{% block scripts %}
+<script type="text/javascript" src="{{url_for('static', filename='js/table.js') }}"></script>
+<script type="text/javascript" src="{{url_for('static', filename='js/artists.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<h1>ARTISTS</h1>
+<form>
+	Artist Name: <input type="text" name="artistName"><br>
+	Genre: <input type="text" name="genre"><br>
+	Sort: 
+		<select name="sort">
+			<option value=''>No sort</option>
+			<option value="hotness">Hotness</option>
+			<option value="familiarity">Familiarity</option>
+		</select>
+		<br>
+	Page: <input type="number" name="page" min="1"><br>
+	<input type="button" value="Submit" 
+		onclick="artistsTable(artistName.value, genre.value, sort.value, page.value);">
+</form>
+<p id="resultTable">[]</p>
+{% endblock %}
